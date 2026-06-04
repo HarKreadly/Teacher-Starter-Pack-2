@@ -1,0 +1,6 @@
+{
+  "name": "Teacher Starter Pack",
+  "description": "An imported application from GitHub: HarKreadly/Teacher-Starter-Pack",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
