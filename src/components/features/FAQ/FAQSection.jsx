@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HelpCircle, ArrowUpRight, ChevronDown } from "lucide-react";
+import { useSettings } from "../../../context/SettingsContext";
 
 const FAQItem = ({ question, answer, isOpen, onToggle }) => {
   return (
@@ -43,6 +44,7 @@ const FAQItem = ({ question, answer, isOpen, onToggle }) => {
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
+  const { activeTheme } = useSettings();
 
   const faqs = [
     {
@@ -65,7 +67,7 @@ const FAQSection = () => {
 
   return (
     <section 
-      className="relative w-full py-20 px-6 md:px-12 lg:px-24 bg-zinc-50 dark:bg-black transition-colors duration-500 overflow-hidden border-t border-zinc-200/40 dark:border-zinc-900/60"
+      className="relative w-full py-20 px-6 md:px-12 lg:px-24 bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500 overflow-hidden border-t border-zinc-200/40 dark:border-zinc-900/60"
       id="faq-section-container"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(244,244,245,0.08)_0%,_transparent_60%)] pointer-events-none" />
@@ -106,7 +108,7 @@ const FAQSection = () => {
             </p>
 
             <button 
-              className="flex items-center gap-2 px-5 py-2.5 bg-zinc-950 hover:bg-zinc-900 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 font-semibold rounded-full text-xs tracking-wide shadow-md transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
+              className={`flex items-center gap-2 px-5 py-2.5 ${activeTheme.primaryBg} font-semibold rounded-full text-xs tracking-wide shadow-md transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]`}
               id="faq-book-demo-btn"
             >
               Book a Demo

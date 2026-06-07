@@ -6,33 +6,37 @@ import {
   Eye, Layers, Cpu, ChevronRight, Clock, Calendar, Quote, Search, Bell,
   Waves
 } from "lucide-react";
-import { useSettings } from "../../context/SettingsContext";
+import { useSettings, THEMES } from "../../context/SettingsContext";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "next-themes";
 
 /* ─── Toggle Row Card ─── */
-const ToggleRow = ({ icon: Icon, title, desc, value, onChange }) => (
-  <div 
-    onClick={onChange}
-    className="flex items-center gap-4 py-3.5 px-4 rounded-2xl border border-zinc-250/20 dark:border-zinc-850/40 bg-white/20 dark:bg-zinc-950/20 backdrop-blur-md transition-all duration-300 hover:border-zinc-350 dark:hover:border-zinc-800 cursor-pointer active:scale-[0.99]"
-  >
-    <div className={`p-2 rounded-xl transition-colors duration-300 ${value ? 'bg-zinc-950 dark:bg-zinc-800 text-white dark:text-zinc-50 shadow-sm border border-zinc-950 dark:border-zinc-700' : 'bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-400 dark:text-zinc-550 border border-transparent'}`}>
-      <Icon size={15} className="stroke-[2]" />
-    </div>
-    <div className="flex-1 min-w-0">
-      <p className="text-xs font-bold uppercase tracking-tight text-zinc-950 dark:text-zinc-100 truncate">{title}</p>
-      <p className="text-[10px] text-zinc-450 dark:text-zinc-500 mt-0.5 leading-relaxed font-semibold">{desc}</p>
-    </div>
+const ToggleRow = ({ icon: Icon, title, desc, value, onChange }) => {
+  const { activeTheme } = useSettings();
+  return (
     <div 
-      className={`w-9 h-5 rounded-full transition-all duration-300 relative outline-hidden shrink-0 ${value ? 'bg-zinc-950 dark:bg-zinc-800 border border-zinc-950 dark:border-zinc-700' : 'bg-zinc-200 dark:bg-zinc-850 border border-transparent'}`}
+      onClick={onChange}
+      className="flex items-center gap-4 py-3.5 px-4 rounded-2xl border border-zinc-250/20 dark:border-zinc-850/40 bg-white/20 dark:bg-zinc-950/20 backdrop-blur-md transition-all duration-300 hover:border-zinc-350 dark:hover:border-zinc-800 cursor-pointer active:scale-[0.99]"
     >
-      <div className={`absolute top-0.5 w-4 h-4 rounded-full transition-all duration-300 shadow-sm ${value ? 'left-4.5 bg-white dark:bg-zinc-300' : 'left-0.5 bg-white dark:bg-zinc-500'}`} />
+      <div className={`p-2 rounded-xl transition-colors duration-300 ${value ? `${activeTheme.primaryBg} shadow-sm border ${activeTheme.border}` : 'bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-400 dark:text-zinc-550 border border-transparent'}`}>
+        <Icon size={15} className="stroke-[2]" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-bold uppercase tracking-tight text-zinc-950 dark:text-zinc-100 truncate">{title}</p>
+        <p className="text-[10px] text-zinc-450 dark:text-zinc-500 mt-0.5 leading-relaxed font-semibold">{desc}</p>
+      </div>
+      <div 
+        className={`w-9 h-5 rounded-full transition-all duration-300 relative outline-hidden shrink-0 ${value ? `${activeTheme.primaryBg} border ${activeTheme.border}` : 'bg-zinc-200 dark:bg-zinc-850 border border-transparent'}`}
+      >
+        <div className={`absolute top-0.5 w-4 h-4 rounded-full transition-all duration-300 shadow-sm ${value ? 'left-4.5 bg-white dark:bg-zinc-300' : 'left-0.5 bg-white dark:bg-zinc-500'}`} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ─── Slider Row Card (Custom Div Slider similar to Brightness Slidebar) ─── */
 const SliderRow = ({ icon: Icon, title, desc, value, onChange, min, max, unit }) => {
+  const { activeTheme } = useSettings();
   const trackRef = useRef(null);
 
   // Calculate percentage of full slider width
@@ -94,7 +98,7 @@ const SliderRow = ({ icon: Icon, title, desc, value, onChange, min, max, unit })
           {/* Active filler track representing progress */}
           <div 
             style={{ width: `${percentage}%` }}
-            className="absolute left-0 top-0 h-full bg-zinc-950 dark:bg-zinc-300 rounded-full transition-all duration-75"
+            className={`absolute left-0 top-0 h-full ${activeTheme.primaryBg} rounded-full transition-all duration-75`}
           />
         </div>
       </div>
@@ -106,6 +110,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState("appearance");
 
   const { 
+    colorTheme, setColorTheme, activeTheme,
     cursorEnabled, setCursorEnabled,
     dispersionCursorEnabled, setDispersionCursorEnabled,
     animationsEnabled, setAnimationsEnabled,
@@ -166,7 +171,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
           <div className="space-y-6">
             {/* Theme */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-505 mb-3.5">Theme Selection</p>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">Theme Selection</p>
               <div className="flex gap-2.5 p-1 rounded-2xl bg-zinc-100/40 dark:bg-zinc-950/20 border border-zinc-250/20 dark:border-zinc-900/30 backdrop-blur-xs">
                 {[
                   { id: "light", label: "Light" },
@@ -178,8 +183,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     onClick={() => setTheme(t.id)}
                     className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 cursor-pointer border ${
                       theme === t.id 
-                      ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm' 
-                      : 'text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-white/60 dark:hover:bg-zinc-900/40 border-transparent'
+                      ? `${activeTheme.primaryBg} shadow-sm border-transparent` 
+                      : 'text-zinc-550 hover:text-zinc-955 dark:hover:text-zinc-200 hover:bg-white/60 dark:hover:bg-zinc-900/40 border-transparent'
                     }`}
                   >
                     {t.label}
@@ -188,9 +193,46 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
+            {/* Accent Color Theme Selection */}
+            <div>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">Color Accent Theme</p>
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-6 gap-3 p-3.5 rounded-2xl bg-zinc-100/40 dark:bg-zinc-950/20 border border-zinc-250/20 dark:border-zinc-900/30 backdrop-blur-xs">
+                {Object.values(THEMES).map(item => {
+                  const isSelected = colorTheme === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setColorTheme(item.id)}
+                      className="flex flex-col items-center gap-1.5 p-1.5 rounded-xl transition-all duration-300 hover:bg-white/30 dark:hover:bg-zinc-900/10 cursor-pointer group"
+                    >
+                      <div 
+                        style={{ backgroundColor: item.color }}
+                        className={`w-9 h-9 rounded-full transition-all duration-300 relative flex items-center justify-center shadow-xs border border-white/20 ${
+                          isSelected 
+                            ? "ring-2 ring-zinc-900 dark:ring-white scale-110 shadow-md" 
+                            : "opacity-80 group-hover:opacity-100 group-hover:scale-105"
+                        }`}
+                      >
+                        {isSelected && (
+                          <span className="text-white text-[10px] font-bold select-none drop-shadow-sm">
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                      <span className={`text-[9px] font-mono tracking-wider uppercase font-extrabold transition-colors duration-300 ${
+                        isSelected ? 'text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-550 group-hover:text-zinc-700 dark:group-hover:text-zinc-300'
+                      }`}>
+                        {item.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Language */}
             <div>
-              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-505 mb-3.5">Language</p>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">Language</p>
               <div className="grid grid-cols-1 gap-2.5">
                 {languages.map(lang => (
                   <button 
@@ -198,7 +240,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     onClick={() => i18n.changeLanguage(lang.code)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold uppercase tracking-tight transition-all duration-300 cursor-pointer border ${
                       i18n.language === lang.code 
-                      ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm' 
+                      ? `${activeTheme.primaryBg} shadow-sm border-transparent` 
                       : 'bg-white/30 dark:bg-zinc-900/10 border-zinc-250/20 dark:border-zinc-850/60 text-zinc-650 dark:text-zinc-400 hover:border-zinc-350 dark:hover:border-zinc-800 hover:bg-white/60 dark:hover:bg-zinc-900/30'
                     }`}
                   >
@@ -216,7 +258,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         return (
           <div className="space-y-6">
             <div>
-              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-505 mb-3.5">General Controls</p>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">General Controls</p>
               <div className="grid grid-cols-1 gap-3.5">
                 <ToggleRow icon={MousePointer2} title="Custom Cursor" desc="Tailored minimalist cursor tracking" value={cursorEnabled} onChange={() => setCursorEnabled(!cursorEnabled)} />
                 <SliderRow icon={Type} title="Text Size" desc="Set global platform base font size" value={fontSize} onChange={setFontSize} min={12} max={24} unit="px" />
@@ -224,7 +266,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </div>
 
             <div>
-              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-505 mb-3.5 pt-2">Hero Widgets</p>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5 pt-2">Hero Widgets</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <ToggleRow icon={Clock} title="Time Widget" desc="Display live clock on hero homepage" value={showTime} onChange={() => setShowTime(!showTime)} />
                 <ToggleRow icon={Calendar} title="Date Widget" desc="Display active date on hero homepage" value={showDate} onChange={() => setShowDate(!showDate)} />
@@ -244,7 +286,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         return (
           <div className="space-y-6">
             <div>
-              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-505 mb-3.5">Environment aesthetics</p>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">Environment aesthetics</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <ToggleRow icon={Film} title="Film Grain" desc="Cinematic visual texture overlay" value={scanlines} onChange={() => setScanlines(!scanlines)} />
                 <ToggleRow icon={Waves} title="Dispersion ripples" desc="Concentric canvas ripples on movement" value={dispersionCursorEnabled} onChange={() => setDispersionCursorEnabled(!dispersionCursorEnabled)} />
@@ -262,7 +304,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         return (
           <div className="space-y-6">
             <div>
-              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-505 mb-3.5">System optimization</p>
+              <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">System optimization</p>
               <div className="grid grid-cols-1 gap-3.5">
                 <ToggleRow icon={Zap} title="Animations" desc="Toggle dynamic UI motion layouts" value={animationsEnabled} onChange={() => setAnimationsEnabled(!animationsEnabled)} />
                 <ToggleRow icon={ScrollText} title="Smooth Scroll" desc="Premium smooth touch scrolling feel" value={smoothScroll} onChange={() => setSmoothScroll(!smoothScroll)} />
@@ -350,7 +392,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 bg-zinc-950/25 dark:bg-black/55 backdrop-blur-md animate-fade-in"
+            className="fixed inset-0 bg-zinc-950/25 dark:bg-zinc-950/55 backdrop-blur-md animate-fade-in"
             onClick={onClose}
           />
 
@@ -365,7 +407,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             {/* Top Bar / Header */}
             <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
               <div className="flex items-center gap-3">
-                <span className="w-1.5 h-6 rounded-full bg-zinc-950 dark:bg-zinc-50" />
+                <span className={`w-1.5 h-6 rounded-full ${activeTheme.primaryBg}`} id="settings-pbar-indicator" />
                 <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 dark:text-zinc-550">Settings Panel</span>
               </div>
               <button
@@ -373,7 +415,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 className="p-2.5 rounded-xl border border-zinc-250/20 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 text-zinc-500 hover:text-zinc-955 dark:hover:text-white transition-all duration-300 active:scale-95 cursor-pointer flex items-center justify-center"
                 title="Close Settings"
               >
-                <X size={14} className="stroke-[2.5]" />
+                <X size={14} className="stroke-[2.5]" id="settings-close-icon" />
               </button>
             </div>
 
@@ -386,11 +428,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   return (
                     <button
                       key={section.id}
+                      id={`sidebar-sec-${section.id}`}
                       onClick={() => setActiveSection(section.id)}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all duration-350 cursor-pointer shrink-0 border ${
                         isActive
-                          ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm font-bold scale-[1.02]'
-                          : 'text-zinc-550 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 bg-transparent border-transparent hover:bg-white/40 dark:hover:bg-zinc-900/30'
+                          ? `${activeTheme.primaryBg} shadow-sm font-bold scale-[1.02] border-transparent`
+                          : 'text-zinc-550 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-zinc-100 bg-transparent border-transparent hover:bg-white/40 dark:hover:bg-zinc-900/30'
                       }`}
                     >
                       <section.icon size={15} className="stroke-[2]" />

@@ -1,163 +1,232 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Sparkles, ArrowRight, Mail, Check } from 'lucide-react';
+import { useSettings } from '../../context/SettingsContext';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const { activeTheme } = useSettings();
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setTimeout(() => {
+        setSubscribed(false);
+        setEmail('');
+      }, 2000);
+    }
+  };
+
   return (
-    <footer className="relative bg-zinc-50 dark:bg-zinc-950 pt-2 transition-colors duration-300">
+    <footer className="relative bg-zinc-50 dark:bg-zinc-950 pt-6 md:pt-10 lg:pt-12 pb-0 transition-colors duration-300 px-6 md:px-10 lg:px-12 w-full" id="app-footer">
       
-      {/* Bottom elegant curved top banner - updated to high-contrast modern light zinc palette */}
-      <div className="relative bg-zinc-100/95 dark:bg-zinc-900/60 md:mx-4 lg:mx-8 xl:mx-12 xl:max-w-[1536px] 2xl:max-w-[1700px] xl:mx-auto text-zinc-900 dark:text-zinc-100 pt-20 xl:pt-28 pb-0 px-6 xl:px-12 text-center rounded-t-[40px] md:rounded-t-[64px] xl:rounded-t-[80px] border-t border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden shadow-[0_-20px_40px_rgba(0,0,0,0.02)] dark:shadow-[0_-20px_40px_rgba(0,0,0,0.2)]">
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-zinc-200/20 dark:from-black/40 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(24,24,27,0.03)_0%,_transparent_65%)] dark:bg-[radial-gradient(circle_at_bottom,_rgba(255,255,255,0.03)_0%,_transparent_65%)] pointer-events-none" />
+      {/* Beautifully Crafted Unified Card with Backdrop Blur - Extra Wide for Larger Screens */}
+      <div 
+        className="relative w-full max-w-7xl xl:max-w-[95vw] 2xl:max-w-[96vw] mx-auto bg-white/40 dark:bg-zinc-900/10 backdrop-blur-xl rounded-t-[3.5rem] sm:rounded-t-[4.5rem] lg:rounded-t-[5.5rem] rounded-b-none border border-b-0 border-zinc-200/50 dark:border-zinc-800/80 p-6 sm:p-10 md:p-12 lg:p-14 text-center overflow-hidden shadow-lg mt-6 md:mt-10 lg:mt-12"
+        id="footer-unified-card"
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-100/10 dark:from-zinc-950/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(24,24,27,0.02)_0%,_transparent_60%)] dark:bg-[radial-gradient(circle_at_bottom,_rgba(255,255,255,0.02)_0%,_transparent_60%)] pointer-events-none" />
         
-        <div className="relative max-w-2xl xl:max-w-3xl mx-auto z-10 flex flex-col items-center gap-6 xl:gap-8 mb-16 xl:mb-20">
-          <h2 className="text-3xl md:text-5xl xl:text-6xl font-black tracking-tight leading-tight text-zinc-955 dark:text-white font-sans">
+        {/* Top CTA Content Section */}
+        <div className="relative max-w-2xl mx-auto z-10 flex flex-col items-center gap-6 mb-12 mt-4">
+          <span className="text-[10px] font-mono tracking-[0.3em] uppercase font-black text-zinc-400 dark:text-zinc-555 flex items-center gap-1.5">
+            <Sparkles size={11} className="text-zinc-450 dark:text-zinc-400" />
+            Seamless Classroom Flow
+          </span>
+          <h2 className="text-3xl md:text-4.5xl font-black tracking-tight leading-tight text-zinc-900 dark:text-white uppercase font-sans">
             Turn preparation into clarity
           </h2>
-          <p className="text-zinc-650 dark:text-zinc-400 text-sm md:text-base xl:text-lg leading-relaxed max-w-md xl:max-w-xl font-sans">
-            Warmedia makes it effortless to uncover pedagogical insights, inspire students, and run your classroom with precision.
+          <p className="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-md font-semibold">
+            Warmedia makes it effortless to uncover pedagogical insights, inspire students, and activate your daily classroom routines in seconds.
           </p>
           <Link 
             to="/warm-ups"
-            className="mt-2 px-6 py-2.5 xl:px-8 xl:py-3.5 bg-zinc-950 hover:bg-zinc-850 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 font-bold rounded-full text-xs tracking-wider uppercase shadow-xl hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_24px_rgba(255,255,255,0.15)] transition-all duration-300 hover:scale-[1.05] active:scale-[0.98] cursor-pointer"
+            className={`mt-2 px-6 py-3 ${activeTheme.primaryBg} font-black rounded-xl text-[10px] tracking-widest uppercase shadow-sm transition-all duration-300 active:scale-95 cursor-pointer border border-transparent font-sans`}
+            id="footer-get-started-btn"
           >
             Get Started
           </Link>
         </div>
 
-        {/* Floating container card with dynamic backdrop filter and coordinates layout matching the main theme */}
-        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[1450px] mx-auto bg-white/70 dark:bg-zinc-950/40 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800/80 rounded-[28px] md:rounded-[36px] xl:rounded-[48px] shadow-[0_12px_45px_rgba(0,0,0,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-8 md:p-12 xl:p-16 relative overflow-hidden text-left mb-16 xl:mb-24 z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_rgba(24,24,27,0.01)_0%,_transparent_50%)] dark:bg-[radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.01)_0%,_transparent_50%)] pointer-events-none" />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 xl:gap-20 relative z-10">
+        {/* Nested Footer Content Card with White/Glassy Background */}
+        <div 
+          className="w-full max-w-6xl xl:max-w-7xl mx-auto bg-white/80 dark:bg-zinc-900/35 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/80 p-8 sm:p-10 md:p-12 rounded-[1.75rem] shadow-md relative overflow-hidden text-left transition-all duration-300 z-10"
+          id="footer-nested-links-card"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 relative z-10">
             
-            {/* Brand/Logo Section (Left column, taking up more space) */}
-            <div className="lg:col-span-5 flex flex-col items-start font-sans">
-              <Link to="/" className="flex items-center gap-3.5 hover:opacity-90 transition-opacity">
-                <div className="w-10 h-10 rounded-xl bg-zinc-950 dark:bg-zinc-50 flex items-center justify-center p-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-zinc-800 dark:border-zinc-200/20 transition-transform duration-300 hover:scale-105">
-                  <svg className="w-full h-full text-white dark:text-zinc-950 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                  </svg>
+            {/* Brand/Newsletter Section */}
+            <div className="lg:col-span-4 flex flex-col items-start gap-6">
+              <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+                <div className="w-8 h-8 rounded-lg bg-zinc-950 dark:bg-zinc-50 flex items-center justify-center shadow-xs border border-zinc-800 dark:border-zinc-200/20">
+                  <Sparkles size={14} className="text-white dark:text-zinc-950 stroke-[2.5]" />
                 </div>
-                <span className="font-extrabold text-lg tracking-tight text-zinc-950 dark:text-white uppercase">warmedia</span>
+                <span className="font-extrabold text-sm tracking-widest text-zinc-950 dark:text-white uppercase">warmedia</span>
               </Link>
               
-              <p className="text-zinc-500 dark:text-zinc-400 text-xs md:text-[13px] xl:text-sm leading-relaxed mt-5 max-w-sm font-medium">
-                Warmedia helps educators transform complex lesson materials into clear, engaging activities — everything you need in one clean place.
+              <p className="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed max-w-sm font-semibold">
+                Transforming complex planning routines into dynamic materials. Tailored beautifully with minimalist layouts, Zinc accents, and responsive controls for the modern school context.
               </p>
+
+              {/* Newsletter form with Zinc styling and backdrop-blur */}
+              <div className="w-full max-w-sm flex flex-col gap-2 mt-2">
+                <span className="text-[9px] font-mono tracking-widest uppercase font-black text-zinc-400 dark:text-zinc-555">
+                  Weekly Insights
+                </span>
+                <form onSubmit={handleSubscribe} className="relative flex items-center w-full">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-400">
+                    <Mail size={12} className="stroke-[2.5]" />
+                  </div>
+                  <input 
+                    type="email"
+                    required
+                    placeholder="name@school.edu"
+                    value={email}
+                    disabled={subscribed}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full text-xs font-semibold pl-9 pr-24 py-2.5 rounded-lg border border-zinc-200/50 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-950/20 backdrop-blur-md text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-700 transition-all duration-300"
+                  />
+                  <button
+                    type="submit"
+                    disabled={subscribed}
+                    className={`absolute right-1.5 px-3 py-1.5 rounded-md text-[9px] font-black uppercase tracking-wider transition-all duration-300 flex items-center gap-1 cursor-pointer ${
+                      subscribed 
+                        ? "bg-emerald-500 text-white" 
+                        : activeTheme.primaryBg
+                    }`}
+                  >
+                    {subscribed ? (
+                      <>
+                        <Check size={10} className="stroke-[3]" />
+                        <span>Sent</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Join</span>
+                        <ArrowRight size={10} className="stroke-[3]" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
             </div>
 
-            {/* Navigation options split into three visual columns */}
-            <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 xl:gap-14 text-sans">
+            {/* Links grid */}
+            <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 text-xs">
               
-              {/* Product Navigation Column */}
-              <div>
-                <h4 className="font-black text-zinc-950 dark:text-white uppercase text-[11px] tracking-widest mb-4">Product</h4>
-                <ul className="space-y-3.5 text-[13px]">
+              {/* Products Column */}
+              <div className="flex flex-col gap-4">
+                <h4 className="font-black text-zinc-955 dark:text-white uppercase tracking-widest text-[10px] border-b border-zinc-150/50 dark:border-zinc-800/60 pb-2">
+                  Curriculum
+                </h4>
+                <ul className="flex flex-col gap-2.5 font-semibold">
                   <li>
-                    <Link to="/warm-ups" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors duration-200 font-semibold">
+                    <Link to="/warm-ups" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
                       Warm-Ups
                     </Link>
                   </li>
                   <li>
-                    <Link to="/materials" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold font-semibold">
+                    <Link to="/materials" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
                       Teaching Materials
                     </Link>
                   </li>
                   <li>
-                    <Link to="/exercises" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors duration-200 font-semibold">
+                    <Link to="/exercises" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
                       Exercises
                     </Link>
                   </li>
                   <li>
-                    <Link to="/assessments" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
+                    <Link to="/assessments" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
                       Assessments
                     </Link>
                   </li>
                 </ul>
               </div>
 
-              {/* Resources Column */}
-              <div>
-                <h4 className="font-black text-zinc-955 dark:text-white uppercase text-[11px] tracking-widest mb-4">Resources</h4>
-                <ul className="space-y-3.5 text-[13px]">
+              {/* Support Column */}
+              <div className="flex flex-col gap-4">
+                <h4 className="font-black text-zinc-955 dark:text-white uppercase tracking-widest text-[10px] border-b border-zinc-150/50 dark:border-zinc-800/60 pb-2">
+                  Support
+                </h4>
+                <ul className="flex flex-col gap-2.5 font-semibold">
                   <li>
-                    <Link to="/documentation" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Documentation
+                    <Link to="/contact" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
+                      Contact Desk
                     </Link>
                   </li>
                   <li>
-                    <Link to="/guides" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Guides
+                    <Link to="/contact?tab=faq" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
+                      Common Questions
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Blog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/contact" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Support
+                    <Link 
+                      to="/contact?tab=feedback" 
+                      className="text-zinc-500 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200"
+                    >
+                      Send Feedback
                     </Link>
                   </li>
                 </ul>
               </div>
 
-              {/* Company Column */}
-              <div className="col-span-2 md:col-span-1">
-                <h4 className="font-black text-zinc-955 dark:text-white uppercase text-[11px] tracking-widest mb-4">Company</h4>
-                <ul className="space-y-3.5 text-[13px]">
+              {/* Project Info Column */}
+              <div className="flex flex-col gap-4 col-span-2 sm:col-span-1">
+                <h4 className="font-black text-zinc-955 dark:text-white uppercase tracking-widest text-[10px] border-b border-zinc-150/50 dark:border-zinc-800/60 pb-2">
+                  Warmedia
+                </h4>
+                <ul className="flex flex-col gap-2.5 font-semibold">
                   <li>
-                    <Link to="/about" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      About Us
+                    <Link to="/" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
+                      Home
                     </Link>
                   </li>
                   <li>
-                    <Link to="/careers" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Careers
+                    <Link to="/contact" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors duration-200">
+                      Partner Network
                     </Link>
                   </li>
                   <li>
-                    <Link to="/contact" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Contact
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/cookies" className="text-zinc-650 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors duration-200 font-semibold">
-                      Partners
-                    </Link>
+                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono block">
+                      V0.4.0 (Release)
+                    </span>
                   </li>
                 </ul>
               </div>
+
             </div>
 
           </div>
 
-          {/* Thin horizontal divider divider line */}
-          <div className="border-t border-zinc-200 dark:border-zinc-800/80 my-8 w-full relative z-10" />
+          {/* Thick elegant dark/light horizontal divider inside nested card */}
+          <div className="border-t border-zinc-200/50 dark:border-zinc-800/40 my-8 w-full relative z-10" />
 
-          {/* Bottom attribution and legal hyperlinks */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 font-sans">
-            <p className="text-[12px] text-zinc-500 dark:text-zinc-450 font-semibold">
-              © {new Date().getFullYear()} Warmedia. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <Link to="/terms" className="text-[12px] text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white underline underline-offset-4 decoration-zinc-200 dark:decoration-zinc-800 hover:decoration-zinc-950 dark:hover:decoration-white transition-colors font-medium">
-                Terms of Service
-              </Link>
-              <Link to="/privacy" className="text-[12px] text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white underline underline-offset-4 decoration-zinc-200 dark:decoration-zinc-800 hover:decoration-zinc-950 dark:hover:decoration-white transition-colors font-medium">
-                Privacy Policy
-              </Link>
+          {/* Bottom copyright & guidelines inside nested card */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 text-[10px] font-mono tracking-wider uppercase font-black text-zinc-450 dark:text-zinc-550">
+            <div>
+              © {new Date().getFullYear()} WARMEDIA. ALL RIGHTS RESERVED.
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-[9px] border border-zinc-200/40 dark:border-zinc-800/85 px-2 py-0.5 rounded text-zinc-450 dark:text-zinc-500">
+                CC BY-NC 4.0
+              </span>
+              <span className="text-[9px] border border-zinc-200/40 dark:border-zinc-800/85 px-2 py-0.5 rounded text-zinc-450 dark:text-zinc-500">
+                MINIMALIST EDITION
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Massive subtle background identifier */}
-        <div className="w-full text-center mt-12 xl:mt-24 select-none pointer-events-none h-24 sm:h-36 md:h-48 xl:h-64 flex items-end justify-center relative z-0">
-          <span className="text-[16vw] xl:text-[14vw] font-black tracking-tighter text-zinc-900/[0.03] dark:text-white/[0.03] leading-none uppercase font-sans origin-bottom font-bold">
+        {/* Giant subtle ambient brand name centered in the backdrop inside parent card */}
+        <div className="w-full text-center mt-6 md:mt-8 select-none pointer-events-none h-12 flex items-end justify-center relative z-0">
+          <span className="text-[10vw] font-black tracking-widest text-zinc-900/[0.03] dark:text-white/[0.03] leading-none uppercase font-sans">
             warmedia
           </span>
-         </div>
+        </div>
+
       </div>
 
     </footer>

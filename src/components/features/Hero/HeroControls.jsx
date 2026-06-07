@@ -11,16 +11,24 @@ const HeroControls = ({
   setAutoPlaySpeed,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const [activeVersionId, setActiveVersionId] = useState("v1.2");
+  const [activeVersionId, setActiveVersionId] = useState("v1.3");
 
   const { 
     widgetsEnabled, 
     showRotationSpeed,
     showTextSizeWidget,
-    showWhatsNew 
+    showWhatsNew,
+    activeTheme
   } = useSettings();
 
   const versions = [
+    { 
+      id: "v1.3",
+      title: "Interactive Visual Mechanics & Unified Spacing",
+      date: "June 7, 2026",
+      desc: "We have introduced visual components directly onto dashboard cells under a minimalist aesthetic. This update includes an interactive histogram, a multi-stage step pipeline, and custom category badges. We also standardized background borders, unified opacity, and maximized performance across all devices.",
+      features: ["Interactive Activity Histogram", "Visual Progress Pipeline", "Category Capsule Labels", "Minimalist Zinc Styling Standards"]
+    },
     { 
       id: "v1.2",
       title: "Major UI Overhaul & Performance Boost",
@@ -77,7 +85,7 @@ const HeroControls = ({
                   onClick={() => setAutoPlaySpeed(num * 1000)}
                   className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 border ${
                     autoPlaySpeed === num * 1000
-                      ? "bg-zinc-900 border-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-200 shadow-sm scale-[1.04]"
+                      ? `${activeTheme.primaryBg} border-transparent shadow-sm scale-[1.04]`
                       : "bg-zinc-100/60 dark:bg-zinc-900/65 text-zinc-650 dark:text-zinc-350 border-transparent hover:bg-zinc-200/65 dark:hover:bg-zinc-800/80 hover:cursor-pointer"
                   }`}
                 >
@@ -111,7 +119,7 @@ const HeroControls = ({
                   onClick={() => setFontSize(sizeObj.id)}
                   className={`flex-1 py-1.5 rounded-xl font-sans font-extrabold transition-all duration-300 border ${sizeObj.sizeClass} ${
                     fontSize === sizeObj.id
-                      ? "bg-zinc-900 border-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-200 shadow-sm scale-[1.04]"
+                      ? `${activeTheme.primaryBg} border-transparent shadow-sm scale-[1.04]`
                       : "bg-zinc-100/60 dark:bg-zinc-900/65 text-zinc-650 dark:text-zinc-350 border-transparent hover:bg-zinc-200/65 dark:hover:bg-zinc-800/80 hover:cursor-pointer"
                   }`}
                 >
@@ -160,7 +168,7 @@ const HeroControls = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="fixed inset-0 bg-zinc-950/25 dark:bg-black/55 backdrop-blur-md animate-fade-in"
+                className="fixed inset-0 bg-zinc-950/25 dark:bg-zinc-950/55 backdrop-blur-md animate-fade-in"
                 onClick={() => setExpanded(false)}
               />
 
@@ -175,7 +183,7 @@ const HeroControls = ({
                 {/* Header Navigation */}
                 <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
                   <div className="flex items-center gap-3">
-                    <span className="w-1.5 h-6 rounded-full bg-zinc-950 dark:bg-zinc-50" />
+                    <span className={`w-1.5 h-6 rounded-full ${activeTheme.primaryBg}`} />
                     <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 dark:text-zinc-550">
                       Release Notes
                     </span>
@@ -194,7 +202,7 @@ const HeroControls = ({
                   
                   {/* Left Nav Pane: Version Timeline */}
                   <div className="w-full md:w-64 lg:w-80 border-r border-zinc-250/20 dark:border-zinc-850/60 p-6 md:p-8 overflow-y-auto scrollbar-none [overscroll-behavior-y:contain] flex flex-col gap-3 shrink-0">
-                    <h4 className="text-[10px] font-bold tracking-widest text-zinc-400 dark:text-zinc-505 uppercase mb-1 font-sans">
+                    <h4 className="text-[10px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase mb-1 font-sans">
                       History
                     </h4>
                     <div className="space-y-2">
@@ -204,7 +212,7 @@ const HeroControls = ({
                           onClick={() => setActiveVersionId(v.id)}
                           className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-left transition-all duration-300 border ${
                             activeVersionId === v.id 
-                              ? "bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm"
+                              ? `${activeTheme.primaryBg} border-transparent shadow-sm`
                               : "bg-white/30 dark:bg-zinc-900/10 border-zinc-250/20 dark:border-zinc-850/60 text-zinc-650 dark:text-zinc-400 hover:border-zinc-350 dark:hover:border-zinc-800 hover:bg-white/60 dark:hover:bg-zinc-900/30"
                           }`}
                         >

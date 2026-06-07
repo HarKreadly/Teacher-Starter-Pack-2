@@ -1,9 +1,13 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Download, BookOpen, Check, FileText, X } from 'lucide-react';
+import { useSettings } from '../context/SettingsContext';
 
 const ResourcePage = ({ title, description, filterConfig, resources }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const { activeTheme } = useSettings();
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return new URLSearchParams(window.location.search).get("q") || "";
+  });
   const [selectedGrade, setSelectedGrade] = useState('All');
   const [downloadingId, setDownloadingId] = useState(null);
 
@@ -75,7 +79,7 @@ const ResourcePage = ({ title, description, filterConfig, resources }) => {
           
           {/* Minimalist Search box with backdrop filter */}
           <div className="relative flex-1 max-w-md">
-            <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-505">
+            <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-500">
               <Search size={14} className="stroke-[2.5]" />
             </div>
             <input 
@@ -108,8 +112,8 @@ const ResourcePage = ({ title, description, filterConfig, resources }) => {
               onClick={() => setSelectedGrade(grade)}
               className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                 selectedGrade === grade
-                  ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md shadow-zinc-950/10"
-                  : "bg-white/40 dark:bg-zinc-900/10 hover:bg-white dark:hover:bg-zinc-805/40 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-150 dark:border-zinc-850/80"
+                  ? `${activeTheme.primaryBg} border-transparent shadow-md`
+                  : "bg-white/40 dark:bg-zinc-900/10 hover:bg-white dark:hover:bg-zinc-805/40 text-zinc-500 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-white border-zinc-150 dark:border-zinc-850/80"
               }`}
             >
               {grade === 'All' ? 'All Grades' : grade}
@@ -135,7 +139,7 @@ const ResourcePage = ({ title, description, filterConfig, resources }) => {
                   exit={{ opacity: 0, scale: 0.95 }}
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="group relative p-6 rounded-2xl border border-zinc-200/30 dark:border-zinc-850 bg-white/30 dark:bg-zinc-900/10 backdrop-blur-xl flex flex-col justify-between h-64 hover:border-zinc-400 dark:hover:border-zinc-750 hover:bg-white/60 dark:hover:bg-zinc-900/20 hover:shadow-lg transition-all duration-300 relative overflow-hidden text-left"
+                  className="group relative p-6 rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-zinc-100/10 dark:bg-zinc-950/10 backdrop-blur-xl flex flex-col justify-between h-64 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-zinc-200/10 dark:hover:bg-zinc-900/10 hover:shadow-lg transition-all duration-300 relative overflow-hidden text-left"
                 >
                   <div>
                     {/* Header line on Card */}
@@ -147,7 +151,7 @@ const ResourcePage = ({ title, description, filterConfig, resources }) => {
                         </span>
                       </div>
                       
-                      <span className="text-[9px] font-bold text-zinc-400 dark:text-zinc-505 font-mono uppercase tracking-wider bg-zinc-50/50 dark:bg-zinc-950/20 border border-zinc-150/40 dark:border-zinc-900/60 px-1.5 py-0.5 rounded">
+                      <span className="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 font-mono uppercase tracking-wider bg-zinc-50/50 dark:bg-zinc-950/20 border border-zinc-150/40 dark:border-zinc-900/60 px-1.5 py-0.5 rounded">
                         {resource.level || 'General'}
                       </span>
                     </div>
@@ -174,7 +178,7 @@ const ResourcePage = ({ title, description, filterConfig, resources }) => {
                       className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all duration-300 pointer-events-auto cursor-pointer border ${
                         downloadingId === resource.id
                           ? "bg-emerald-500 text-white border-emerald-500 shadow-sm"
-                          : "bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 border-transparent"
+                          : `${activeTheme.primaryBg} border-transparent`
                       }`}
                     >
                       {downloadingId === resource.id ? (

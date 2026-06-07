@@ -5,8 +5,10 @@ import {
   ArrowLeft, Upload, ChevronRight, Paperclip, User,
   Twitter, Linkedin, Github, Instagram
 } from "lucide-react";
+import { useSettings } from "../context/SettingsContext";
 
 const ContactPage = () => {
+  const { activeTheme } = useSettings();
   const [selectedMode, setSelectedMode] = useState(null); // null | "feature" | "donate" | "chat"
   const [hoveredId, setHoveredId] = useState(null); // null | "feature" | "donate" | "chat"
   
@@ -125,14 +127,14 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-zinc-100/40 dark:bg-black text-zinc-900 dark:text-zinc-50 transition-colors duration-500 overflow-x-hidden flex flex-col justify-between" id="contact-outer-container">
+    <div className="w-full min-h-screen bg-zinc-100/40 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-500 overflow-x-hidden flex flex-col justify-between" id="contact-outer-container">
       
       {/* Subtle top/bottom ambient blurry glows */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-zinc-200/20 dark:bg-zinc-900/5 rounded-full blur-[140px] pointer-events-none z-0" />
       <div className="absolute bottom-10 left-1/4 w-[500px] h-[500px] bg-zinc-300/10 dark:bg-zinc-900/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
       {/* Main Container */}
-      <div className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 relative z-10 font-sans flex flex-col justify-center">
+      <div className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 relative z-10 font-sans flex flex-col justify-center min-h-[100vh]" id="contact-inner-cards-container">
         
         <AnimatePresence mode="wait">
           {!selectedMode ? (
@@ -265,7 +267,7 @@ const ContactPage = () => {
                   <div className="space-y-4 pt-4">
                     {/* Stage Tag */}
                     <div className="w-fit">
-                      <span className="bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md">
+                      <span className={`${activeTheme.primaryBg} text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md`}>
                         STAGE 01
                       </span>
                     </div>
@@ -581,7 +583,7 @@ const ContactPage = () => {
                           <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="flex items-center justify-center gap-2 px-8 py-4 bg-zinc-950 dark:bg-white text-white dark:text-zinc-955 hover:bg-zinc-900 dark:hover:bg-zinc-100 active:scale-95 font-extrabold rounded-full text-[10px] tracking-widest uppercase shadow-md transition-all disabled:opacity-50 cursor-pointer shrink-0"
+                            className={`flex items-center justify-center gap-2 px-8 py-4 ${activeTheme.primaryBg} active:scale-95 font-extrabold rounded-full text-[10px] tracking-widest uppercase shadow-md transition-all disabled:opacity-50 cursor-pointer shrink-0`}
                           >
                             {isSubmitting ? (
                               <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -628,7 +630,7 @@ const ContactPage = () => {
 
                         <button
                           onClick={resetModeSelection}
-                          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-950 hover:bg-zinc-905 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-950 text-[10px] font-black uppercase cursor-pointer transition-all shadow-xs"
+                          className={`flex items-center justify-center gap-2 px-5 py-3 rounded-xl ${activeTheme.primaryBg} text-[10px] font-black uppercase cursor-pointer transition-all shadow-xs`}
                         >
                           Show options list
                           <ChevronRight size={11} className="stroke-[2.5]" />

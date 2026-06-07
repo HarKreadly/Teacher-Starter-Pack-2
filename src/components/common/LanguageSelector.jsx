@@ -4,6 +4,7 @@ import { X, Languages } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdOutlineTranslate } from "react-icons/md";
 import { createPortal } from "react-dom";
+import { useSettings } from "../../context/SettingsContext";
 
 const languages = [
   { code: "en", name: "English", sub: "EN" },
@@ -13,6 +14,7 @@ const languages = [
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation("common");
+  const { activeTheme } = useSettings();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLanguageChange = (languageCode) => {
@@ -51,7 +53,7 @@ const LanguageSelector = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="fixed inset-0 bg-zinc-950/25 dark:bg-black/55 backdrop-blur-md animate-fade-in"
+                className="fixed inset-0 bg-zinc-950/25 dark:bg-zinc-950/55 backdrop-blur-md animate-fade-in"
                 onClick={() => setIsOpen(false)}
               />
 
@@ -66,7 +68,7 @@ const LanguageSelector = () => {
                 {/* Top Bar / Header */}
                 <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
                   <div className="flex items-center gap-3">
-                    <span className="w-1.5 h-6 rounded-full bg-zinc-950 dark:bg-zinc-50" />
+                    <span className={`w-1.5 h-6 rounded-full ${activeTheme.primaryBg}`} />
                     <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 dark:text-zinc-550">Language</span>
                   </div>
                   <button
@@ -87,7 +89,7 @@ const LanguageSelector = () => {
                         onClick={() => handleLanguageChange(lang.code)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold uppercase tracking-tight transition-all duration-300 cursor-pointer border ${
                           i18n.language === lang.code 
-                          ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm' 
+                          ? `${activeTheme.primaryBg} border-transparent shadow-sm` 
                           : 'bg-white/30 dark:bg-zinc-900/10 border-zinc-250/20 dark:border-zinc-850/60 text-zinc-650 dark:text-zinc-400 hover:border-zinc-350 dark:hover:border-zinc-800 hover:bg-white/60 dark:hover:bg-zinc-900/30'
                         }`}
                       >

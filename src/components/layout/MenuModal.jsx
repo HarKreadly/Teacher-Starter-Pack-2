@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { X, ArrowRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { useSettings } from "../../context/SettingsContext";
 
 const menuItems = [
   { name: "Home", path: "/", id: "01" },
@@ -15,6 +16,7 @@ const menuItems = [
 
 const MenuModal = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const { activeTheme } = useSettings();
 
   useEffect(() => {
     if (isOpen) {
@@ -41,7 +43,7 @@ const MenuModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 bg-zinc-950/25 dark:bg-black/55 backdrop-blur-md animate-fade-in"
+            className="fixed inset-0 bg-zinc-950/25 dark:bg-zinc-950/55 backdrop-blur-md animate-fade-in"
             onClick={onClose}
           />
 
@@ -56,7 +58,7 @@ const MenuModal = ({ isOpen, onClose }) => {
             {/* Top Bar / Header */}
             <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
               <div className="flex items-center gap-3">
-                <span className="w-1.5 h-6 rounded-full bg-zinc-950 dark:bg-zinc-50" />
+                <span className={`w-1.5 h-6 rounded-full ${activeTheme.primaryBg}`} />
                 <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 dark:text-zinc-550">Navigation</span>
               </div>
               <button
@@ -85,7 +87,7 @@ const MenuModal = ({ isOpen, onClose }) => {
                         onClick={onClose}
                         className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-semibold uppercase tracking-tight transition-all duration-300 cursor-pointer border group ${
                           isActive 
-                          ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm' 
+                          ? `${activeTheme.primaryBg} border-transparent shadow-sm` 
                           : 'bg-white/30 dark:bg-zinc-900/10 border-zinc-250/20 dark:border-zinc-850/60 text-zinc-650 dark:text-zinc-400 hover:border-zinc-350 dark:hover:border-zinc-800 hover:bg-white/60 dark:hover:bg-zinc-900/30'
                         }`}
                       >
@@ -128,7 +130,7 @@ const MenuModal = ({ isOpen, onClose }) => {
                         onClick={onClose}
                         className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-semibold uppercase tracking-tight transition-all duration-300 cursor-pointer border group ${
                           isActive 
-                          ? 'bg-zinc-950 text-white border-zinc-950 dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-700 shadow-sm' 
+                          ? `${activeTheme.primaryBg} border-transparent shadow-sm` 
                           : 'bg-white/30 dark:bg-zinc-900/10 border-zinc-250/20 dark:border-zinc-850/60 text-zinc-650 dark:text-zinc-400 hover:border-zinc-350 dark:hover:border-zinc-800 hover:bg-white/60 dark:hover:bg-zinc-900/30'
                         }`}
                       >

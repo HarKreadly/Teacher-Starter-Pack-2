@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
+import { useSettings } from "../../../context/SettingsContext";
 
 const CalendarWidget = ({ currentDate }) => {
+  const { activeTheme } = useSettings();
   // Navigation state for the calendar
   const [navDate, setNavDate] = useState(new Date(currentDate || new Date()));
 
@@ -156,7 +158,7 @@ const CalendarWidget = ({ currentDate }) => {
                 ${!cell.isCurrentMonth 
                   ? "text-zinc-300 dark:text-zinc-700/60 pointer-events-none" 
                   : currentDayIsToday
-                    ? "bg-zinc-950 dark:bg-zinc-50 text-white dark:text-zinc-950 font-bold shadow-sm scale-110 z-10"
+                    ? `${activeTheme.bulletBg} font-bold shadow-sm scale-110 z-10`
                     : isSelected
                       ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 border border-zinc-300 dark:border-zinc-700 font-bold"
                       : "text-zinc-700 dark:text-zinc-350 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/65"

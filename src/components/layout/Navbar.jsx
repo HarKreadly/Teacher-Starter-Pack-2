@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import LanguageSelector from "../common/LanguageSelector";
 import MenuModal from "./MenuModal";
 import SettingsModal from "./SettingsModal";
+import { useSettings } from "../../context/SettingsContext";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -122,6 +123,7 @@ const DropdownItems = ({ items }) => {
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
+  const { activeTheme } = useSettings();
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [hoveredTab, setHoveredTab] = useState(null);
@@ -250,30 +252,24 @@ const Navbar = () => {
               const isActive = activeItem?.name === item.name;
 
               return (
-                <div
+                <Link
                   key={item.name}
+                  to={item.link}
                   ref={el => { itemRefs.current[item.name] = el; }}
-                  className={`relative py-1.5 px-3.5 cursor-pointer shrink-0 rounded-full transition-all duration-300 border ${
+                  className={`relative py-1.5 px-3.5 cursor-pointer shrink-0 rounded-full transition-all duration-300 border flex items-center gap-1.5 ${
                     isActive
                       ? "bg-zinc-100/80 dark:bg-zinc-800/45 text-zinc-950 dark:text-zinc-50 border-zinc-200/50 dark:border-zinc-700/25 font-bold shadow-xs scale-[1.02]"
                       : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 border-transparent"
                   }`}
                   onMouseEnter={() => handleLeftMouseEnter(item.name, hasDropdown)}
                 >
-                  <Link
-                    to={item.link}
-                    className={`flex items-center gap-1 transition-colors duration-200 ${
-                      isActive ? "text-zinc-950 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-455 hover:text-zinc-955 dark:hover:text-white"
-                    }`}
-                  >
-                    <span>{item.name}</span>
-                    {hasDropdown && (
-                      <ChevronDown
-                        size={12}
-                        className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180 text-zinc-900 dark:text-white" : "text-zinc-400 dark:text-zinc-500"}`}
-                      />
-                    )}
-                  </Link>
+                  <span>{item.name}</span>
+                  {hasDropdown && (
+                    <ChevronDown
+                      size={12}
+                      className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180 text-zinc-900 dark:text-white" : "text-zinc-400 dark:text-zinc-500"}`}
+                    />
+                  )}
 
                   {hoveredTab === item.name && !isActive && (
                     <motion.span
@@ -305,7 +301,7 @@ const Navbar = () => {
                       </DropdownPortal>
                     )}
                   </AnimatePresence>
-                </div>
+                </Link>
               );
             })}
 
@@ -331,9 +327,10 @@ const Navbar = () => {
           className="pointer-events-auto flex items-center gap-2.5 px-4 md:px-5 py-2.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/80 bg-white/75 dark:bg-zinc-950/75 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] text-sm transition-colors duration-300 relative shrink-0"
           onMouseLeave={handleRightMouseLeave}
         >
-          <div
+          <Link
+            to={activeItem.link}
             ref={rightBadgeRef}
-            className="relative px-3 py-1.5 rounded-full font-sans font-bold text-[10px] tracking-widest uppercase bg-zinc-900 border border-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 dark:border-zinc-200 shadow-xs cursor-pointer flex items-center gap-1.5 transition-colors duration-300"
+            className={`relative px-3 py-1.5 rounded-full font-sans font-bold text-[10px] tracking-widest uppercase shadow-xs cursor-pointer flex items-center gap-1.5 transition-colors duration-300 border ${activeTheme.primaryBg} border-transparent`}
             onMouseEnter={() => handleRightMouseEnter(activeItem)}
           >
             <span>{activeItem.name}</span>
@@ -343,7 +340,7 @@ const Navbar = () => {
                 className={`transition-transform duration-300 ${activeRightDropdown ? "rotate-180" : ""}`}
               />
             )}
-          </div>
+          </Link>
 
           {/* Right dock dropdown via portal */}
           <AnimatePresence>

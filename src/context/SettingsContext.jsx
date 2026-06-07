@@ -1,12 +1,132 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
 
+export const THEMES = {
+  zinc: {
+    id: "zinc",
+    name: "Zinc",
+    color: "#71717a",
+    primaryBg: "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950",
+    primaryText: "text-zinc-950 dark:text-white",
+    hoverBg: "hover:bg-zinc-900 dark:hover:bg-zinc-100",
+    border: "border-zinc-950 dark:border-white",
+    accentBorder: "border-zinc-950 dark:border-white",
+    textHover: "hover:text-zinc-950 dark:hover:text-white",
+    fill: "fill-zinc-950 dark:fill-white",
+    stroke: "stroke-zinc-950 dark:stroke-white",
+    tag: "bg-zinc-105 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100",
+    shadow: "shadow-zinc-950/10",
+    bulletBg: "bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950",
+  },
+  blossom: {
+    id: "blossom",
+    name: "Blossom",
+    color: "#fbcfe8",
+    primaryBg: "bg-pink-200 hover:bg-pink-300 text-pink-900 dark:bg-pink-300 dark:hover:bg-pink-400 dark:text-pink-950",
+    primaryText: "text-pink-600 dark:text-pink-300",
+    hoverBg: "hover:bg-pink-300 dark:hover:bg-pink-400",
+    border: "border-pink-300 dark:border-pink-400",
+    accentBorder: "border-pink-300 dark:border-pink-400",
+    textHover: "hover:text-pink-600 dark:hover:text-pink-300",
+    fill: "fill-pink-400 dark:fill-pink-300",
+    stroke: "stroke-pink-400 dark:stroke-pink-300",
+    tag: "bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-200",
+    shadow: "shadow-pink-300/20",
+    bulletBg: "bg-pink-300 text-pink-950 dark:bg-pink-400 dark:text-pink-950",
+  },
+  mint: {
+    id: "mint",
+    name: "Mint",
+    color: "#bbf7d0",
+    primaryBg: "bg-green-200 hover:bg-green-300 text-green-900 dark:bg-green-300 dark:hover:bg-green-400 dark:text-green-950",
+    primaryText: "text-green-600 dark:text-green-300",
+    hoverBg: "hover:bg-green-300 dark:hover:bg-green-400",
+    border: "border-green-300 dark:border-green-400",
+    accentBorder: "border-green-300 dark:border-green-400",
+    textHover: "hover:text-green-600 dark:hover:text-green-300",
+    fill: "fill-green-400 dark:fill-green-300",
+    stroke: "stroke-green-400 dark:stroke-green-300",
+    tag: "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200",
+    shadow: "shadow-green-300/20",
+    bulletBg: "bg-green-300 text-green-950 dark:bg-green-400 dark:text-green-950",
+  },
+  buttercup: {
+    id: "buttercup",
+    name: "Buttercup",
+    color: "#fef08a",
+    primaryBg: "bg-yellow-200 hover:bg-yellow-300 text-yellow-900 dark:bg-yellow-300 dark:hover:bg-yellow-400 dark:text-yellow-950",
+    primaryText: "text-yellow-600 dark:text-yellow-300",
+    hoverBg: "hover:bg-yellow-300 dark:hover:bg-yellow-400",
+    border: "border-yellow-300 dark:border-yellow-400",
+    accentBorder: "border-yellow-300 dark:border-yellow-400",
+    textHover: "hover:text-yellow-600 dark:hover:text-yellow-300",
+    fill: "fill-yellow-400 dark:fill-yellow-300",
+    stroke: "stroke-yellow-400 dark:stroke-yellow-300",
+    tag: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200",
+    shadow: "shadow-yellow-300/20",
+    bulletBg: "bg-yellow-300 text-yellow-950 dark:bg-yellow-400 dark:text-yellow-950",
+  },
+  cloud: {
+    id: "cloud",
+    name: "Cloud",
+    color: "#bfdbfe",
+    primaryBg: "bg-blue-200 hover:bg-blue-300 text-blue-900 dark:bg-blue-300 dark:hover:bg-blue-400 dark:text-blue-950",
+    primaryText: "text-blue-600 dark:text-blue-300",
+    hoverBg: "hover:bg-blue-300 dark:hover:bg-blue-400",
+    border: "border-blue-300 dark:border-blue-400",
+    accentBorder: "border-blue-300 dark:border-blue-400",
+    textHover: "hover:text-blue-600 dark:hover:text-blue-300",
+    fill: "fill-blue-400 dark:fill-blue-300",
+    stroke: "stroke-blue-400 dark:stroke-blue-300",
+    tag: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200",
+    shadow: "shadow-blue-300/20",
+    bulletBg: "bg-blue-300 text-blue-950 dark:bg-blue-400 dark:text-blue-950",
+  },
+  lavender: {
+    id: "lavender",
+    name: "Lavender",
+    color: "#e9d5ff",
+    primaryBg: "bg-purple-200 hover:bg-purple-300 text-purple-900 dark:bg-purple-300 dark:hover:bg-purple-400 dark:text-purple-950",
+    primaryText: "text-purple-600 dark:text-purple-300",
+    hoverBg: "hover:bg-purple-300 dark:hover:bg-purple-400",
+    border: "border-purple-300 dark:border-purple-400",
+    accentBorder: "border-purple-300 dark:border-purple-400",
+    textHover: "hover:text-purple-600 dark:hover:text-purple-300",
+    fill: "fill-purple-400 dark:fill-purple-300",
+    stroke: "stroke-purple-400 dark:stroke-purple-300",
+    tag: "bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-200",
+    shadow: "shadow-purple-300/20",
+    bulletBg: "bg-purple-300 text-purple-950 dark:bg-purple-400 dark:text-purple-950",
+  },
+  creamsicle: {
+    id: "creamsicle",
+    name: "Creamsicle",
+    color: "#fed7aa",
+    primaryBg: "bg-orange-200 hover:bg-orange-300 text-orange-900 dark:bg-orange-300 dark:hover:bg-orange-400 dark:text-orange-950",
+    primaryText: "text-orange-600 dark:text-orange-300",
+    hoverBg: "hover:bg-orange-300 dark:hover:bg-orange-400",
+    border: "border-orange-300 dark:border-orange-400",
+    accentBorder: "border-orange-300 dark:border-orange-400",
+    textHover: "hover:text-orange-600 dark:hover:text-orange-300",
+    fill: "fill-orange-400 dark:fill-orange-300",
+    stroke: "stroke-orange-400 dark:stroke-orange-300",
+    tag: "bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200",
+    shadow: "shadow-orange-300/20",
+    bulletBg: "bg-orange-300 text-orange-950 dark:bg-orange-400 dark:text-orange-950",
+  }
+};
+
 const SettingsContext = createContext();
 
 export const useSettings = () => useContext(SettingsContext);
 
 export const SettingsProvider = ({ children }) => {
   // --- Persistent States ---
+  const [colorTheme, setColorTheme] = useState(() => {
+    const saved = localStorage.getItem("harkreadly_colortheme");
+    return saved !== null && Object.keys(THEMES).includes(JSON.parse(saved)) ? JSON.parse(saved) : "creamsicle"; 
+  });
+
   const [cursorEnabled, setCursorEnabled] = useState(() => {
     const saved = localStorage.getItem("harkreadly_cursor");
     return saved !== null ? JSON.parse(saved) : true;
@@ -116,6 +236,7 @@ export const SettingsProvider = ({ children }) => {
 
   // --- Persistence Effect ---
   useEffect(() => {
+    localStorage.setItem("harkreadly_colortheme", JSON.stringify(colorTheme));
     localStorage.setItem("harkreadly_cursor", JSON.stringify(cursorEnabled));
     localStorage.setItem("harkreadly_dispersion_cursor", JSON.stringify(dispersionCursorEnabled));
     localStorage.setItem("harkreadly_animations", JSON.stringify(animationsEnabled));
@@ -137,15 +258,18 @@ export const SettingsProvider = ({ children }) => {
     localStorage.setItem("harkreadly_showtextsizewidget", JSON.stringify(showTextSizeWidget));
     localStorage.setItem("harkreadly_showwhatsnew", JSON.stringify(showWhatsNew));
   }, [
-    cursorEnabled, dispersionCursorEnabled, animationsEnabled, sparksEnabled, floatingParticles, 
+    colorTheme, cursorEnabled, dispersionCursorEnabled, animationsEnabled, sparksEnabled, floatingParticles, 
     scanlines, performanceMode, smoothScroll, 
     autoPlaySpeed, fontSize, backdropBlur, widgetsEnabled,
     showTime, showDate, showCalendar, showQuotation, showSearchBar,
     showRotationSpeed, showTextSizeWidget, showWhatsNew
   ]);
 
+  const activeTheme = THEMES[colorTheme] || THEMES.creamsicle;
+
   return (
     <SettingsContext.Provider value={{ 
+      colorTheme, setColorTheme, activeTheme,
       cursorEnabled, setCursorEnabled,
       dispersionCursorEnabled, setDispersionCursorEnabled,
       animationsEnabled, setAnimationsEnabled,

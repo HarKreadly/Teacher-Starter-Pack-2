@@ -9,6 +9,7 @@ import WarmupsPage from './pages/WarmupsPage';
 import ContactPage from './pages/ContactPage';
 import ExercisesPage from './pages/ExercisesPage';
 import AssessmentsPage from './pages/AssessmentsPage';
+import SearchPage from './pages/SearchPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { textbookFilters, mockResources } from './data/mockData';
 
@@ -105,6 +106,7 @@ const AppContent = () => {
             <Route path="materials/*" element={<ResourcePage title="Teaching Materials" description="Access premium lesson plans, textbook companions, and printable worksheets compiled to save your prep time." filterConfig={textbookFilters} resources={mockResources.filter(r => r.type === 'lesson-plan' || r.type === 'textbook')} />} />
             <Route path="exercises/*" element={<ExercisesPage />} />
             <Route path="assessments/*" element={<AssessmentsPage />} />
+            <Route path="search" element={<SearchPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>

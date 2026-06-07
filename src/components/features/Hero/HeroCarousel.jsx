@@ -13,7 +13,7 @@ import LayerManager from "./LayerManager";
 
 const HeroCarousel = ({ currentQuote, nextQuote, prevQuote, fontSize, currentSlide, className = "" }) => {
   const { theme } = useTheme();
-  const { showQuotation, showSearchBar, widgetsEnabled } = useSettings();
+  const { showQuotation, showSearchBar, widgetsEnabled, activeTheme } = useSettings();
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,11 +45,13 @@ const HeroCarousel = ({ currentQuote, nextQuote, prevQuote, fontSize, currentSli
   ];
 
   const triggerSearch = () => {
-    const path = selectedTag ? selectedTag.path : "/warm-ups";
+    const tabName = selectedTag ? selectedTag.name.toLowerCase().replace("-", "") : "all";
     if (searchQuery.trim()) {
-      navigate(`${path}?q=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}&tab=${tabName}`);
+    } else if (selectedTag) {
+      navigate(`/search?tab=${tabName}`);
     } else {
-      navigate(path);
+      navigate("/search");
     }
   };
 
@@ -119,7 +121,7 @@ const HeroCarousel = ({ currentQuote, nextQuote, prevQuote, fontSize, currentSli
                        onClick={() => setSelectedTag(isSelected ? null : target)}
                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase transition-colors border ${
                          isSelected
-                           ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 border-zinc-900 dark:border-zinc-100 shadow-sm'
+                           ? `${activeTheme.primaryBg} border-transparent shadow-sm`
                            : 'bg-zinc-100/50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-450 border-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 hover:text-zinc-900 dark:hover:text-zinc-200'
                        }`}
                        type="button"
@@ -137,7 +139,7 @@ const HeroCarousel = ({ currentQuote, nextQuote, prevQuote, fontSize, currentSli
                 disabled={!searchQuery.trim() && !selectedTag}
                 className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all shrink-0 ml-2 ${
                   searchQuery.trim() || selectedTag
-                    ? "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 cursor-pointer hover:scale-105"
+                    ? `${activeTheme.bulletBg} cursor-pointer hover:scale-105`
                     : "bg-zinc-100 dark:bg-zinc-800 text-zinc-300 dark:text-zinc-600 cursor-not-allowed"
                 }`}
                 type="button"

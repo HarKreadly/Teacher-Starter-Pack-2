@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import HeroControls from "../components/features/Hero/HeroControls";
 import HeroCarousel from "../components/features/Hero/HeroCarousel";
 import HeroInfo from "../components/features/Hero/HeroInfo";
+import StatsSection from "../components/features/Stats/StatsSection";
 import FAQSection from "../components/features/FAQ/FAQSection";
 import { useSettings } from "../context/SettingsContext";
 import { slides } from "../data/heroSlides";
@@ -55,7 +56,7 @@ const Home = () => {
   }
 
   return (
-    <div className="relative w-full bg-gray-50 dark:bg-black text-gray-900 dark:text-white overflow-hidden transition-colors duration-1000">
+    <div className="relative w-full bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 overflow-hidden transition-colors duration-1000">
       {/* Fold 1: Hero Landing Area */}
       <div className="relative w-full min-h-dvh overflow-hidden flex flex-col justify-center">
         {/* Layer 0: Full Screen Background Image */}
@@ -77,7 +78,7 @@ const Home = () => {
         </AnimatePresence>
 
         {/* Layer 1: Blur Overlay */}
-        <div className="absolute inset-0 z-0 backdrop-blur-2xl bg-white/40 dark:bg-black/40 transition-colors duration-500"></div>
+        <div className="absolute inset-0 z-0 backdrop-blur-2xl bg-white/40 dark:bg-zinc-950/40 transition-colors duration-500"></div>
 
         {/* Layer 2: Dark Vignette */}
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.4)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(24,24,27,0.95)_100%)] pointer-events-none transition-all duration-500"></div>
@@ -107,7 +108,10 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Fold 2: Frequently Asked Questions */}
+      {/* Fold 2: Dynamic Core Impact Metrics Section */}
+      <StatsSection />
+
+      {/* Fold 3: Frequently Asked Questions */}
       <FAQSection />
     </div>
   );

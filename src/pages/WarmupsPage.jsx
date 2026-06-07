@@ -4,360 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { 
   Search, Grid, List, Clock, User, 
   X, ChevronLeft, ChevronRight, ChevronDown, PlayCircle, RefreshCw, 
-  Download, ArrowRight, Paperclip,
+  Download, ArrowLeft, ArrowRight, Paperclip,
   Sliders, Timer, Users, Cpu, Flame, LayoutGrid, Wrench
 } from "lucide-react";
-
-// Curated high-fidelity warmups data
-const warmupsData = [
-  {
-    id: 1,
-    title: "Two Truths and a Lie",
-    activityType: "Ice Breakers",
-    duration: "10min",
-    preparation: "none",
-    energy: "boosters",
-    interaction: "group",
-    materials: "Traditional",
-    author: "Emma Wilson",
-    description: "A classic speaking game where students write three statements about themselves—two true, one false—and classmates vote on which is the lie.",
-    instructions: [
-      "Ask each student to write down three statements about themselves: two must be true, and one must be a lie.",
-      "In pairs or groups, students read their statements aloud.",
-      "The listening students must ask follow-up questions to probe the details of each statement.",
-      "Finally, they vote on which statement is the lie. The presenter reveals the truth!"
-    ],
-    tips: "Encourage students to make their lies plausible and their truths slightly unusual to keep it highly engaging.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "English Language Arts", topic: "Autobiographical Writing (Facts vs. embellishments)" },
-      { subject: "History", topic: "Historical Myths (Identifying factual records vs. historical rumors)" },
-      { subject: "Science", topic: "Scientific Method (Differentiating proven facts from general misconceptions)" }
-    ]
-  },
-  {
-    id: 2,
-    title: "Speed Debating",
-    activityType: "Discussion",
-    duration: "10min",
-    preparation: "low",
-    energy: "building",
-    interaction: "pairs",
-    materials: "Traditional",
-    author: "David Chen",
-    description: "Speed-dating style debates. Students rotate partners every 2 minutes to discuss controversial or lighthearted topics using target grammar.",
-    instructions: [
-      "Arrange the classroom chairs in two concentric circles facing each other.",
-      "Provide a debate prompt (e.g., 'Will artificial intelligence replace classroom teachers?').",
-      "Give students in the inner and outer circles 2 minutes to debate their respective sides.",
-      "When the buzzer sounds, have the outer circle rotate one seat to the right. Present a new debate topic."
-    ],
-    tips: "Keep topics light and humorous to lower student anxiety and keep speaking confidence high.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Social Studies & Civics", topic: "Public Debates (Expressing arguments on civic policies)" },
-      { subject: "English Literature", topic: "Character Analysis (Debating the moral decisions of central characters)" },
-      { subject: "Environmental Science", topic: "Conservation Tactics (Immediate action vs. long-term planning)" }
-    ]
-  },
-  {
-    id: 3,
-    title: "The Human Knot",
-    activityType: "TPR",
-    duration: "10min",
-    preparation: "none",
-    energy: "boosters",
-    interaction: "whole class",
-    materials: "Traditional",
-    author: "Michael Brown",
-    description: "A physical group puzzle where students stand in a circle, grab hands with two different people, and must untangle themselves without letting go.",
-    instructions: [
-      "Divide the class into small groups of 6 to 8 students.",
-      "Have each group stand in a tight circle and reach out to hold hands with two different classmates (do not hold hands with adjacent peers).",
-      "Instruct groups to fully untangle themselves to form a perfect circle without releasing their hand grip.",
-      "Encourage the use of direction words (under, over, step, turn) to boost vocabulary."
-    ],
-    tips: "Ensure there is enough empty space around each group to move safely and comfortably.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Physical Education", topic: "Teamwork & Leadership (Practicing clear, spoken physical guidance)" },
-      { subject: "STEM / Computing", topic: "Sequencing & Optimization (Sorting out linear processes physically)" },
-      { subject: "Drama & Theater", topic: "Stage Trust Exercises (Improving body coordination and communication)" }
-    ]
-  },
-  {
-    id: 4,
-    title: "Word Association Chain",
-    activityType: "Brainstorming",
-    duration: "5min",
-    preparation: "none",
-    energy: "boosters",
-    interaction: "whole class",
-    materials: "Traditional",
-    author: "Sarah Jenkins",
-    description: "A fast-paced vocabulary game. The teacher says a starting word, and students take turns saying the first related word that comes to mind.",
-    instructions: [
-      "Have all students sit or stand in a circle.",
-      "Start the chain by saying a core thematic noun related to your current unit (e.g., 'Classroom').",
-      "The next student must say the first related word that comes to mind within 3 seconds (e.g., 'Book').",
-      "Continue clockwise. If a student hesitates, repeats a word, or makes a non-sensical link, start a new chain."
-    ],
-    tips: "Run this game at high speed. The pressure of time leads to creative, spontaneous vocabulary links.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Foreign Languages", topic: "Rapid Theme Recall (Spontaneous vocabulary connection)" },
-      { subject: "Chemistry", topic: "Elemental Groups (Linking elemental properties or compounds)" },
-      { subject: "Creative Writing", topic: "Metaphorical Association (Fostering fluid transitions in poetry)" }
-    ]
-  },
-  {
-    id: 5,
-    title: "Where Do You Stand?",
-    activityType: "Games",
-    duration: "10min",
-    preparation: "low",
-    energy: "building",
-    interaction: "whole class",
-    materials: "Traditional",
-    author: "Elena Rostova",
-    description: "An active opinion poll. The teacher designates sides of the room as 'Strongly Agree' and 'Strongly Disagree'. Students walk to represent their view.",
-    instructions: [
-      "Label opposite walls of the classroom with 'Strongly Agree' and 'Strongly Disagree' signs.",
-      "Read out a provocative statement (e.g., 'Saturdays should be part of the official school week').",
-      "Ask students to physically walk and position themselves along the spectrum based on their opinion.",
-      "Invite students from different positions along the wall to explain their reasoning to the class."
-    ],
-    tips: "Encourage respectful listening. Let students change their physical stance if another student's argument changes their mind.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Philosophy & Ethics", topic: "Ethical Dilemmas (Evaluating viewpoints on complex choices)" },
-      { subject: "History", topic: "Turning Point Events (Deciphering multi-faceted public reactions)" },
-      { subject: "Mathematics", topic: "Spectrum Mapping (Aligning physical locations to number lines)" }
-    ]
-  },
-  {
-    id: 6,
-    title: "Vocabulary Charades",
-    activityType: "TPR",
-    duration: "10min",
-    preparation: "low",
-    energy: "boosters",
-    interaction: "whole class",
-    materials: "Traditional",
-    author: "Emma Wilson",
-    description: "Active non-verbal acting game where students act out a target vocabulary term while the rest of the class shouts out guesses.",
-    instructions: [
-      "Divide the classroom into two competing teams.",
-      "Have one student volunteer from Team A pick a secret vocabulary card from the teacher's box.",
-      "Give them 60 seconds to act out the term non-verbally (no speaking, no writing, no drawing).",
-      "Team A classmates guess. If they guess correctly within the limit, score a point. Switch turns to Team B."
-    ],
-    tips: "Use vocabulary words from previous units for a highly energetic and fun review session.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Biology", topic: "Cellular Roles (Acting out organelle processes non-verbally)" },
-      { subject: "English & ESL", topic: "Action Verbs & Idioms (Visualizing phrases and expressions physically)" },
-      { subject: "Earth Science", topic: "Tectonic Movements (Enacting plate subduction and fault actions)" }
-    ]
-  },
-  {
-    id: 7,
-    title: "Logical Flow Cryptogram",
-    activityType: "Puzzles",
-    duration: "7min",
-    preparation: "high",
-    energy: "calming",
-    interaction: "individual",
-    materials: "Objects",
-    author: "Marcus Vance",
-    description: "Students receive physical paper strips or cards with scrambled phrases or diagrams, needing to sequence them into a logical argument flow.",
-    instructions: [
-      "Distribute the scrambled puzzle strips or cardboard cards to individual desks.",
-      "Prompt students to silence all devices and read through each fragment attentively.",
-      "Order the fragments progressively to form a logical syllogism, narrative, or mathematical deduction.",
-      "Check their sequence alignment once completed to earn points."
-    ],
-    tips: "Perfect for sharpening inductive reasoning skills at the very start of a rigorous science or mathematics lecture.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Mathematics", topic: "Geometric Proofs (Deciphering logical deductive sequences)" },
-      { subject: "Argumentative Writing", topic: "Structuring Premises (Aligning core premises before drawing a conclusion)" },
-      { subject: "Physics", topic: "Thermodynamics Laws (Chronologically ordering step-by-step energy changes)" }
-    ]
-  },
-  {
-    id: 8,
-    title: "Digital Interactive Polls",
-    activityType: "Brainstorming",
-    duration: "5min",
-    preparation: "high",
-    energy: "calming",
-    interaction: "individual",
-    materials: "ICT",
-    author: "Jessica Martinez",
-    description: "A quiet, highly analytical warm-up utilizing digital response clickers or devices to answer conceptual multi-layered review items.",
-    instructions: [
-      "Have students project or load the digital polling screen on their individual screens.",
-      "Present a complex conceptual problem with multiple plausible distractors.",
-      "Students submit their structured choices anonymously.",
-      "Display the aggregate bar charts immediately to launch a guided class-wide correction."
-    ],
-    tips: "Excellent way to identify system-wide student misconceptions before the core lesson delivery starts.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Statistics", topic: "Data Trends (Analyzing real-time chart variance based on classmate data)" },
-      { subject: "Language Arts", topic: "Grammar Identification (Polling correct syntax in tricky sample lines)" },
-      { subject: "Geography", topic: "Demographic Anomalies (Testing predictions of regional density factors)" }
-    ]
-  },
-  {
-    id: 9,
-    title: "Silent Scribe Relay",
-    activityType: "Games",
-    duration: "7min",
-    preparation: "none",
-    energy: "building",
-    interaction: "group",
-    materials: "Traditional",
-    author: "Liwei Zhang",
-    description: "A completely silent team race where students take turns writing one sentence at a time on the whiteboard to compile a coherent theme story.",
-    instructions: [
-      "Form groups of 4 to 5 students, each lined up facing their sector of the whiteboard.",
-      "Provide a creative starter sentence on the screen.",
-      "The first student in each team walks up, writes exactly one logically connected sentence, and hands off the marker.",
-      "Crucially, no talking, signaling, or whispering is permitted. The team with the most structurally coherent story wins."
-    ],
-    tips: "Forces intense focus on sentence cohesion, grammar syntax, and writing mechanics under structured constraints.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Creative Writing", topic: "Narrative Pacing (Developing logical sequence under unpredictable peer inputs)" },
-      { subject: "Foreign Languages", topic: "Sentence Concordance (Correcting agreement constraints as a team)" },
-      { subject: "Social Studies", topic: "Historical Storytelling (Summarizing historical event timelines in co-authored logs)" }
-    ]
-  },
-  {
-    id: 10,
-    title: "Mind Map Sandbox",
-    activityType: "Brainstorming",
-    duration: "10min",
-    preparation: "low",
-    energy: "calming",
-    interaction: "pairs",
-    materials: "ICT",
-    author: "Oliver Gedeon",
-    description: "Using a collaborative digital whiteboard on tablets or notebooks, student pairs construct rapid association clusters around a central topic.",
-    instructions: [
-      "Instruct student pairs to log into the shared virtual board on their tablets.",
-      "Announce the core anchor concept of the current lesson.",
-      "Within 8 minutes, pairs must map out related subtopics, connecting lines, and descriptive nodes.",
-      "Have students submit their digital mind map URLs for quick peer-evaluation gallery walks."
-    ],
-    tips: "Provides excellent visual structures to bridge pre-existing concept knowledge with newly introduced lesson domains.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Ecology", topic: "Food Web Outlines (Constructing multi-directional energy exchange networks)" },
-      { subject: "Literature Study", topic: "Thematic Trait Alignments (Connecting central themes to plot elements)" },
-      { subject: "Art History", topic: "Art Movement Lineage (Mapping regional roots and branches of art eras)" }
-    ]
-  },
-  {
-    id: 11,
-    title: "Grid Riddle Chase",
-    activityType: "Puzzles",
-    duration: "7min",
-    preparation: "low",
-    energy: "building",
-    interaction: "pairs",
-    materials: "Objects",
-    author: "Tariq Ramadan",
-    description: "Pairs are given a grid worksheet containing a series of subtle mathematical or linguistic riddles that decipher a secret lock code.",
-    instructions: [
-      "Hand out the physical riddle sheets containing a 4x4 coordinate challenge puzzle.",
-      "Partners collaborate to solve the cells systematically, finding numbers that lock into a specific combination formula.",
-      "Verify combinations at the front. The first three pairs to unlock the target get a small prize."
-    ],
-    tips: "Boosts cooperative problem-solving speeds and gets students talking productively within minutes.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Pre-Algebra", topic: "Coordinate Mapping (Deciphering riddles mapped on Cartesian fields)" },
-      { subject: "Biology", topic: "Taxonomy Key Trees (Unlocking classifications of strange cell species)" },
-      { subject: "Syntax Logic", topic: "Phonetic Decoding (Locating missing prefixes across grids to map values)" }
-    ]
-  },
-  {
-    id: 12,
-    title: "Socratic Spark Pairs",
-    activityType: "Discussion",
-    duration: "5min",
-    preparation: "none",
-    energy: "calming",
-    interaction: "pairs",
-    materials: "Traditional",
-    author: "Aria Thorne",
-    description: "Students split into pairs with opposite assigned viewpoints to practice concise, structured dialogue using Socratic questions.",
-    instructions: [
-      "Assign a rapid-fire argumentative thesis statement to the class.",
-      "Left partners defend the premise, right partners act as the gentle Socratic interrogator asking clarifying questions.",
-      "Swap roles after 2 minutes of active conversation.",
-      "Conclude with pairs writing down one key insight they learned from their partner's response."
-    ],
-    tips: "Fosters precise verbal listening skills and empathetic dialogue habits.",
-    gradient: "group-hover:from-zinc-100 group-hover:to-zinc-250 dark:group-hover:from-zinc-800 dark:group-hover:to-zinc-900",
-    border: "border-zinc-200/80 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700",
-    shadow: "hover:shadow-xl",
-    tagColor: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900/40 dark:text-zinc-300 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-950",
-    accent: "rgb(24, 24, 27)",
-    lessonExamples: [
-      { subject: "Modern History", topic: "Democratic Reforms (Exploring the ethical tensions of voting shifts)" },
-      { subject: "Environmental Ethics", topic: "Urban Development (Evaluating ecological impacts vs. housing needs)" },
-      { subject: "Economics", topic: "Market Tariffs (Analysing microeconomic impacts on consumer options)" }
-    ]
-  }
-];
+import { useSettings } from "../context/SettingsContext";
+import { warmupsData } from "../data/warmupsData";
 
 const GeometricShapes = ({ id }) => {
   if (id % 6 === 1) {
@@ -406,6 +57,145 @@ const GeometricShapes = ({ id }) => {
       <circle cx="78" cy="78" r="10" className="fill-zinc-400 dark:fill-zinc-650" />
     </svg>
   );
+};
+
+const StepIllustration = ({ activityType, index }) => {
+  const strokeColor = "stroke-zinc-300 dark:stroke-zinc-800";
+  const accentStroke = "stroke-zinc-900 dark:stroke-zinc-100";
+  const softAccent = "stroke-zinc-400 dark:stroke-zinc-650";
+
+  // Conceptual inline minimalist vector illustrations mimicking fine hand-sketched schemas.
+  if (activityType === "Ice Breakers" || activityType === "Discussion") {
+    if (index % 3 === 0) {
+      return (
+        <div className="w-full h-36 flex items-center justify-center relative my-4">
+          <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+            {/* Minimalist user circles with connecting communication lines */}
+            <circle cx="35" cy="50" r="14" className={strokeColor} strokeWidth="1" />
+            <circle cx="70" cy="50" r="14" className={accentStroke} strokeWidth="1" />
+            <path d="M 49,45 Q 52.5,42 56,45" className={accentStroke} strokeWidth="1" strokeLinecap="round" />
+            <path d="M 44,55 Q 52.5,58 61,55" className={softAccent} strokeWidth="1" strokeLinecap="round" strokeDasharray="2 2" />
+            {/* Dynamic visual indicator dot */}
+            <circle cx="70" cy="42" r="2.5" className="fill-zinc-950 dark:fill-white stroke-none" />
+          </svg>
+        </div>
+      );
+    } else if (index % 3 === 1) {
+      return (
+        <div className="w-full h-36 flex items-center justify-center relative my-4">
+          <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+            {/* Laptop model with feedback curves */}
+            <rect x="25" y="32" width="50" height="34" rx="4" className={strokeColor} strokeWidth="1" />
+            <line x1="20" y1="66" x2="80" y2="66" className={accentStroke} strokeWidth="1.2" strokeLinecap="round" />
+            <path d="M 40,48 H 60" className={strokeColor} strokeWidth="1" />
+            <path d="M 45,54 H 55" className={softAccent} strokeWidth="1" />
+            <circle cx="50" cy="40" r="3" className={`${accentStroke} fill-none`} strokeWidth="1" />
+            <path d="M 15,35 Q 22,25 32,30" className={softAccent} strokeWidth="1" strokeDasharray="3 3" />
+          </svg>
+        </div>
+      );
+    } else {
+      return (
+        <div className="w-full h-36 flex items-center justify-center relative my-4">
+          <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+            {/* Stacked speech balloons or message lanes */}
+            <rect x="20" y="24" width="45" height="22" rx="6" className={strokeColor} strokeWidth="1" />
+            <rect x="35" y="52" width="45" height="22" rx="6" className={accentStroke} strokeWidth="1" />
+            <path d="M 30,46 L 26,52" className={strokeColor} strokeWidth="1" />
+            <path d="M 70,52 L 74,46" className={accentStroke} strokeWidth="1" />
+          </svg>
+        </div>
+      );
+    }
+  }
+
+  if (activityType === "TPR" || activityType === "Games") {
+    if (index % 3 === 0) {
+      return (
+        <div className="w-full h-36 flex items-center justify-center relative my-4">
+          <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+            {/* Concentric rings / physical coordination rings */}
+            <circle cx="50" cy="50" r="28" className={strokeColor} strokeWidth="1" strokeDasharray="4 2" />
+            <circle cx="50" cy="50" r="18" className={accentStroke} strokeWidth="1.2" />
+            <path d="M 50,15 V 32 M 50,68 V 85" className={softAccent} strokeWidth="1" />
+            <circle cx="50" cy="32" r="3" className="fill-none stroke-zinc-950 dark:stroke-white" strokeWidth="1" />
+            <circle cx="50" cy="68" r="3" className="fill-zinc-950 dark:fill-white" />
+          </svg>
+        </div>
+      );
+    } else if (index % 3 === 1) {
+      return (
+        <div className="w-full h-36 flex items-center justify-center relative my-4">
+          <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+            {/* Flow dynamic arrows / spectrum indicators */}
+            <line x1="15" y1="50" x2="85" y2="50" className={strokeColor} strokeWidth="1" />
+            <circle cx="50" cy="50" r="8" className={accentStroke} strokeWidth="1.2" />
+            <path d="M 28,34 L 18,50 L 28,66" className={softAccent} strokeWidth="1" strokeLinejoin="round" />
+            <path d="M 72,34 L 82,50 L 72,66" className={accentStroke} strokeWidth="1" strokeLinejoin="round" />
+            <circle cx="50" cy="50" r="2" className="fill-zinc-950 dark:fill-white" />
+          </svg>
+        </div>
+      );
+    } else {
+      return (
+        <div className="w-full h-36 flex items-center justify-center relative my-4">
+          <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+            {/* Compass / node connectors */}
+            <rect x="25" y="25" width="50" height="50" rx="25" className={strokeColor} strokeWidth="1" />
+            <line x1="25" y1="50" x2="75" y2="50" className={softAccent} strokeWidth="1" strokeDasharray="3 3" />
+            <line x1="50" y1="25" x2="50" y2="75" className={softAccent} strokeWidth="1" strokeDasharray="3 3" />
+            <path d="M 40,40 L 60,60" className={accentStroke} strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="40" cy="40" r="3" className="fill-zinc-900 dark:fill-zinc-100" />
+            <circle cx="60" cy="60" r="3" className="fill-none stroke-zinc-900 dark:stroke-zinc-100" strokeWidth="1" />
+          </svg>
+        </div>
+      );
+    }
+  }
+
+  // Fallback diagrams (for Puzzles, Brainstorming, etc.)
+  if (index % 3 === 0) {
+    return (
+      <div className="w-full h-36 flex items-center justify-center relative my-4">
+        <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+          {/* Box grids resembling puzzle pieces/cards */}
+          <rect x="20" y="25" width="26" height="26" rx="4" className={strokeColor} strokeWidth="1" />
+          <rect x="54" y="25" width="26" height="26" rx="4" className={accentStroke} strokeWidth="1" />
+          <rect x="37" y="58" width="26" height="26" rx="4" className={strokeColor} strokeWidth="1" />
+          <path d="M 40,38 L 54,38" className={softAccent} strokeWidth="1" strokeDasharray="2 2" />
+          <path d="M 33,51 L 43,58" className={softAccent} strokeWidth="1" strokeDasharray="2 2" />
+        </svg>
+      </div>
+    );
+  } else if (index % 3 === 1) {
+    return (
+      <div className="w-full h-36 flex items-center justify-center relative my-4">
+        <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+          {/* Brainstorming node webs */}
+          <circle cx="50" cy="30" r="8" className={accentStroke} strokeWidth="1.2" />
+          <circle cx="28" cy="65" r="8" className={strokeColor} strokeWidth="1" />
+          <circle cx="72" cy="65" r="8" className={strokeColor} strokeWidth="1" />
+          <line x1="45" y1="36" x2="33" y2="59" className={softAccent} strokeWidth="1" />
+          <line x1="55" y1="36" x2="67" y2="59" className={softAccent} strokeWidth="1" />
+          <circle cx="50" cy="30" r="3" className="fill-zinc-950 dark:fill-white" />
+        </svg>
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-full h-36 flex items-center justify-center relative my-4">
+        <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none">
+          {/* Structured list lines with tick metrics */}
+          <line x1="20" y1="30" x2="80" y2="30" className={accentStroke} strokeWidth="1.2" />
+          <line x1="20" y1="50" x2="70" y2="50" className={strokeColor} strokeWidth="1" />
+          <line x1="20" y1="70" x2="80" y2="70" className={strokeColor} strokeWidth="1" />
+          <circle cx="85" cy="30" r="2.5" className="fill-zinc-950 dark:fill-white stroke-none" />
+          <circle cx="75" cy="50" r="2" className="fill-zinc-400 dark:fill-zinc-600 stroke-none" />
+          <circle cx="85" cy="70" r="2" className="fill-zinc-400 dark:fill-zinc-600 stroke-none" />
+        </svg>
+      </div>
+    );
+  }
 };
 
 const categoryDetails = {
@@ -612,9 +402,46 @@ const stickyNotePresets = {
   }
 };
 
+const formulaData = {
+  voltage: {
+    title: "High Voltage Kinetic",
+    metric1: "Kinesthetic Drive",
+    val1: 95,
+    metric2: "Cognitive Load",
+    val2: 30,
+    metric3: "Social Resonance",
+    val3: 85,
+    spark: "ZINC-800 // SENSORY_SHIELD",
+    blueprint: "Convert static desk positions to rotating nodes every 120 seconds. High frequency physical handovers reduce screen fatigue."
+  },
+  dialectic: {
+    title: "Cognitive Dialectic",
+    metric1: "Kinesthetic Drive",
+    val1: 20,
+    metric2: "Cognitive Load",
+    val2: 90,
+    metric3: "Social Resonance",
+    val3: 95,
+    spark: "ZINC-600 // CRITICAL_HEURISTIC",
+    blueprint: "Establish randomized peer-debate dyads. Force thesis-antithesis synthesis in rapid 90 second intervals with muted transitions."
+  },
+  reticulation: {
+    title: "Logical Reticulation",
+    metric1: "Kinesthetic Drive",
+    val1: 15,
+    metric2: "Cognitive Load",
+    val2: 95,
+    metric3: "Social Resonance",
+    val3: 40,
+    spark: "ZINC-400 // RESOLVING_DEDUCTION",
+    blueprint: "Deploy silent puzzle sequences in increments of three. Gradual logic escalation builds dopamine cycles via pattern recognition."
+  }
+};
+
 const WarmupsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { activeTheme } = useSettings();
 
   const [searchQuery, setSearchQuery] = useState(() => {
     return new URLSearchParams(window.location.search).get("q") || "";
@@ -629,6 +456,7 @@ const WarmupsPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeFormulaId, setActiveFormulaId] = useState("voltage");
 
   // Derive selectedType directly from the URL pathname to avoid state synchronization side-effects
   const selectedType = useMemo(() => {
@@ -702,6 +530,18 @@ const WarmupsPage = () => {
   }, [filteredWarmups]);
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const warmupId = params.get("warmupId");
+    if (warmupId) {
+      const match = warmupsData.find(w => w.id.toString() === warmupId);
+      if (match) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setSelectedWarmup(match);
+      }
+    }
+  }, [location.search]);
+
+  useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
   }, [searchQuery, selectedType, selectedTime, selectedPreparation, selectedEnergy, selectedInteraction, selectedMaterials]);
@@ -723,7 +563,7 @@ const WarmupsPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-zinc-55 dark:bg-black text-zinc-900 dark:text-zinc-100 transition-colors duration-1000 font-sans pb-24 pt-28 overflow-x-hidden relative" id="warmups-outer-container">
+    <div className="w-full min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-1000 font-sans pb-24 pt-28 overflow-x-hidden relative" id="warmups-outer-container">
       
       {/* ── IMMERSIVE FOLD PANEL HERO (Designed exactly after e-commerce mockup reference) ── */}
       <div className="relative w-full bg-[#fef9c3] dark:bg-[#1f1d12] overflow-hidden border-b border-zinc-200/50 dark:border-zinc-900/50 shadow-md mb-16 select-none" id="hero-fold-mat">
@@ -741,7 +581,7 @@ const WarmupsPage = () => {
         />
 
         {/* TOP LAYER: White Curl Page */}
-        <div className="w-full bg-white dark:bg-zinc-900 border-b border-zinc-250/20 rounded-br-[140px] pb-24 pt-10 px-6 sm:px-12 md:px-16 lg:px-20 relative overflow-hidden transition-colors z-10 shadow-lg">
+        <div className="w-full bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-250/20 rounded-br-[140px] pb-24 pt-10 px-6 sm:px-12 md:px-16 lg:px-20 relative overflow-hidden transition-colors z-10 shadow-lg">
           
           {/* Authentic Page Curl Fold Bottom-Right Overlap Element */}
           <div className="absolute bottom-0 right-0 w-[140px] h-[140px] bg-gradient-to-tr from-zinc-200 via-zinc-250 to-white dark:from-zinc-805 dark:via-zinc-750 dark:to-zinc-850 rounded-tl-[140px] shadow-[-16px_-16px_32px_rgba(0,0,0,0.14),_0_15px_30px_rgba(0,0,0,0.12)] border-t border-l border-white/50 dark:border-zinc-700/30 transition-all pointer-events-none z-20" />
@@ -759,7 +599,7 @@ const WarmupsPage = () => {
                   }}
                   className={`px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer ${
                     selectedType === type 
-                      ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-md scale-[1.02]" 
+                      ? `${activeTheme.primaryBg} shadow-md border-transparent scale-[1.02]` 
                       : "text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
                   }`}
                 >
@@ -946,8 +786,8 @@ const WarmupsPage = () => {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-1">
             {/* Search Bar wrapper and container styled to match the layout switcher buttons */}
             <div className="flex-1 max-w-md w-full">
-              <div className="relative w-full bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800 rounded-xl p-1 shadow-xs flex items-center">
-                <div className="pl-2.5 pr-1 text-zinc-400 dark:text-zinc-505 flex items-center justify-center shrink-0">
+              <div className="relative w-full bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/80 rounded-xl p-1 shadow-xs flex items-center">
+                <div className="pl-2.5 pr-1 text-zinc-400 dark:text-zinc-500 flex items-center justify-center shrink-0">
                   <Search size={14} className="stroke-[2.2]" />
                 </div>
                 
@@ -984,7 +824,7 @@ const WarmupsPage = () => {
           <div className="flex flex-wrap items-center gap-4">
             
             {/* View Mode Switcher */}
-            <div className="flex items-center gap-1 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 rounded-xl border border-zinc-200/50 dark:border-zinc-800">
+            <div className="flex items-center gap-1 bg-zinc-100/80 dark:bg-zinc-900/80 p-1 rounded-xl border border-zinc-200/50 dark:border-zinc-800/80">
               {[
                 { id: "colorful", label: "Colorful", icon: Grid },
                 { id: "minimalist", label: "Minimalist", icon: Grid },
@@ -1006,7 +846,7 @@ const WarmupsPage = () => {
             </div>
 
             {/* Export trigger or Download button */}
-            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 rounded-xl text-xs font-extrabold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer">
+            <button className={`flex items-center gap-2 px-4 py-2 ${activeTheme.primaryBg} rounded-xl text-xs font-extrabold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer`}>
               <Download size={13} />
               <span className="hidden sm:inline">Download</span>
             </button>
@@ -1015,7 +855,7 @@ const WarmupsPage = () => {
         </div>
 
         {/* ── Advanced Filter Engine Accordion ── */}
-        <div className="mb-10 rounded-[2rem] border border-zinc-200/80 dark:border-zinc-900/60 bg-zinc-100/10 dark:bg-zinc-950/20 backdrop-blur-xl overflow-hidden transition-all duration-300">
+        <div className="mb-10 rounded-[2rem] border border-zinc-200/50 dark:border-zinc-800/80 bg-zinc-100/10 dark:bg-zinc-950/20 backdrop-blur-xl overflow-hidden transition-all duration-300">
           
           {/* Accordion Trigger Header */}
           <button
@@ -1035,7 +875,7 @@ const WarmupsPage = () => {
 
               {/* Active filters count badge */}
               {activeFiltersCount > 0 && (
-                <div className="ml-2 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 text-[9px] font-mono font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider">
+                <div className={`ml-2 ${activeTheme.primaryBg} text-[9px] font-mono font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider`}>
                   {activeFiltersCount} Active
                 </div>
               )}
@@ -1077,7 +917,7 @@ const WarmupsPage = () => {
                             onClick={() => handleTypeSelect(type)}
                             className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                               selectedType === type
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md scale-[1.02]"
+                                ? `${activeTheme.primaryBg} border-transparent shadow-md scale-[1.02]`
                                 : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 shadow-xs"
                             }`}
                           >
@@ -1100,7 +940,7 @@ const WarmupsPage = () => {
                             onClick={() => setSelectedTime(time)}
                             className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                               selectedTime === time
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md scale-[1.02]"
+                                ? `${activeTheme.primaryBg} border-transparent shadow-md scale-[1.02]`
                                 : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 shadow-xs"
                             }`}
                           >
@@ -1123,7 +963,7 @@ const WarmupsPage = () => {
                             onClick={() => setSelectedPreparation(prep)}
                             className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                               selectedPreparation === prep
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md scale-[1.02]"
+                                ? `${activeTheme.primaryBg} border-transparent shadow-md scale-[1.02]`
                                 : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 shadow-xs"
                             }`}
                           >
@@ -1146,7 +986,7 @@ const WarmupsPage = () => {
                             onClick={() => setSelectedEnergy(energy)}
                             className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                               selectedEnergy === energy
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md scale-[1.02]"
+                                ? `${activeTheme.primaryBg} border-transparent shadow-md scale-[1.02]`
                                 : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 shadow-xs"
                             }`}
                           >
@@ -1169,7 +1009,7 @@ const WarmupsPage = () => {
                             onClick={() => setSelectedInteraction(interact)}
                             className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                               selectedInteraction === interact
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md scale-[1.02]"
+                                ? `${activeTheme.primaryBg} border-transparent shadow-md scale-[1.02]`
                                 : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 shadow-xs"
                             }`}
                           >
@@ -1192,8 +1032,8 @@ const WarmupsPage = () => {
                             onClick={() => setSelectedMaterials(material)}
                             className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border ${
                               selectedMaterials === material
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white shadow-md scale-[1.02]"
-                                : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 shadow-xs"
+                                ? `${activeTheme.primaryBg} border-transparent shadow-md scale-[1.02]`
+                                : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-800/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-800/60 shadow-xs"
                             }`}
                           >
                             {material === "All" ? "All Materials" : material}
@@ -1218,125 +1058,118 @@ const WarmupsPage = () => {
               initial={{ opacity: 0, scale: 0.98, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 15 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full bg-white/40 dark:bg-zinc-900/10 backdrop-blur-xl rounded-[2rem] border border-zinc-250/60 dark:border-zinc-850 shadow-lg p-6 sm:p-10 md:p-12 text-left relative overflow-hidden mb-12 animate-once"
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full bg-zinc-50 dark:bg-zinc-950 backdrop-blur-3xl rounded-[2.5rem] border border-zinc-200/40 dark:border-zinc-800/80 shadow-2xl p-6 sm:p-10 md:p-12 text-left relative overflow-hidden mb-12 animate-once"
               id="selected-warmup-details-container"
             >
-              {/* Close Button Trigger */}
-              <button
-                onClick={() => setSelectedWarmup(null)}
-                className="absolute top-6 right-6 z-20 p-2 text-zinc-400 hover:text-zinc-950 dark:hover:text-white bg-zinc-100/85 dark:bg-zinc-800 hover:bg-zinc-200/50 dark:hover:bg-zinc-750 border border-zinc-200/50 dark:border-zinc-700 rounded-xl transition-all duration-300 cursor-pointer flex items-center justify-center shadow-xs"
-              >
-                <X size={14} className="stroke-[2.2]" />
-              </button>
-
-              {/* Subtitle / Title header setup */}
-              <div className="mb-8 pr-12">
-                <span className={`px-2.5 py-1 rounded-lg text-[9px] font-mono tracking-widest font-black uppercase ${selectedWarmup.tagColor} mb-3.5 inline-block`}>
-                  {selectedWarmup.activityType}
-                </span>
-                
-                <h2 className="text-2xl sm:text-3.5xl font-black text-zinc-900 dark:text-white uppercase tracking-tight leading-tight mb-3">
-                  {selectedWarmup.title}
-                </h2>
-
-                {/* Metadata Strip */}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-mono font-bold text-zinc-400 dark:text-zinc-505">
-                  <span className="flex items-center gap-1.5 font-mono">
-                    <Clock size={12} className="stroke-[2.2]" /> 
-                    {selectedWarmup.duration}
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-zinc-350 dark:bg-zinc-700" />
-                  <span className="flex items-center gap-1.5 capitalize font-mono">
-                    <Users size={12} className="stroke-[2.2]" /> 
-                    Format: {selectedWarmup.interaction}
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-zinc-350 dark:bg-zinc-700" />
-                  <span className="flex items-center gap-1.5 capitalize font-mono">
-                    <Wrench size={12} className="stroke-[2.2]" /> 
-                    Prep: {selectedWarmup.preparation}
-                  </span>
-                  {selectedWarmup.author && (
-                    <>
-                      <span className="w-1 h-1 rounded-full bg-zinc-355 dark:bg-zinc-700" />
-                      <span className="flex items-center gap-1.5 uppercase font-mono">
-                        <User size={12} className="stroke-[2.2]" /> 
-                        {selectedWarmup.author}
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Main contents grids */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6 border-t border-zinc-200/30 dark:border-zinc-805/40">
-                
-                {/* Left details grid spans 4/12 */}
-                <div className="lg:col-span-4 space-y-6">
-                  
-                  {/* Objective Card Block */}
-                  <div>
-                    <h4 className="text-[9px] font-mono font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2.5">Objective</h4>
-                    <div className="text-zinc-700 dark:text-zinc-300 text-xs sm:text-sm leading-relaxed p-5 rounded-2xl bg-zinc-100/10 dark:bg-zinc-950/20 border border-zinc-200/50 dark:border-zinc-805/65 backdrop-blur-sm font-semibold shadow-2xs">
-                      {selectedWarmup.description}
-                    </div>
-                  </div>
-
-                  {/* Instructor Tips Card Block */}
-                  {selectedWarmup.tips && (
-                    <div>
-                      <h4 className="text-[9px] font-mono font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2.5">Facilitator tips</h4>
-                      <div className="text-zinc-650 dark:text-zinc-400 text-xs leading-relaxed p-5 rounded-2xl bg-zinc-50/65 dark:bg-zinc-950/35 border border-dashed border-zinc-250/60 dark:border-zinc-805/60 italic font-semibold shadow-3xs">
-                        Pro-Tip: {selectedWarmup.tips}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Right instructions grid spans 8/12 */}
-                <div className="lg:col-span-8 space-y-6">
-                  
-                  {/* Blueprint steps execution block */}
-                  <div>
-                    <h4 className="text-[9px] font-mono font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3.5">Tactical execution blueprint</h4>
-                    
-                    <div className="grid grid-cols-1 gap-4">
-                      {selectedWarmup.instructions.map((step, idx) => (
-                        <div 
-                          key={idx} 
-                          className="bg-white/40 dark:bg-zinc-950/20 backdrop-blur-md rounded-2xl border border-zinc-200/50 dark:border-zinc-850 p-5 shadow-xs hover:border-zinc-305 dark:hover:border-zinc-750 transition-all duration-300 flex gap-4 items-start"
-                        >
-                          <span className="w-8 h-8 rounded-xl shrink-0 flex items-center justify-center text-xs font-mono font-black bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 shadow-xs border border-zinc-850 dark:border-zinc-100 transition-transform duration-300 hover:scale-105">
-                            {idx + 1}
-                          </span>
-                          <div className="flex-1">
-                            <span className="text-[8px] font-mono font-bold text-zinc-400 dark:text-zinc-500 block mb-1">STEP {idx + 1}</span>
-                            <p className="text-zinc-750 dark:text-zinc-300 leading-relaxed text-xs sm:text-sm font-semibold">
-                              {step}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* Back navigation footer details */}
-              <div className="p-5 -mx-6 -mb-6 mt-10 md:px-8 bg-zinc-100/75 dark:bg-zinc-950/65 backdrop-blur-md border-t border-zinc-255/50 dark:border-zinc-805/65 flex items-center justify-between rounded-b-[2rem]">
-                <span className="text-[9px] text-zinc-450 dark:text-zinc-550 font-bold tracking-widest font-mono">REPOSITORY DISPATCH SYSTEM</span>
-                
+              {/* Header with return button */}
+              <div className="flex items-center justify-between pb-6 mb-8 border-b border-zinc-200/50 dark:border-zinc-800/80">
                 <button
                   onClick={() => {
                     setSelectedWarmup(null);
+                    if (new URLSearchParams(window.location.search).has("warmupId")) {
+                      navigate(location.pathname, { replace: true });
+                    }
                     document.getElementById('filters-grid-section')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-5 py-2 hover:opacity-90 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 font-black uppercase tracking-widest text-[10px] rounded-xl active:scale-95 transition-all cursor-pointer shadow-md flex items-center justify-center font-bold font-mono"
+                  className="flex items-center gap-2 text-[10px] font-mono tracking-widest uppercase font-black text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
                 >
-                  Return to warmups
+                  <ArrowLeft size={14} className="stroke-[2.5]" />
+                  Return To Warmups
                 </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-h-[500px]">
+                
+                {/* LEFT COLUMN (4/12 width): Title, objectives, custom sticky note tips */}
+                <div className="lg:col-span-4 flex flex-col justify-between space-y-8 lg:border-r lg:border-zinc-250/20 lg:dark:border-zinc-800/50 lg:pr-10">
+                  
+                  <div className="space-y-6">
+                    {/* Category Label Tag */}
+                    <div>
+                      <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-mono tracking-widest font-black uppercase ${selectedWarmup.tagColor}`}>
+                        {selectedWarmup.activityType}
+                      </span>
+                    </div>
+
+                    {/* Master Title Frame */}
+                    <div>
+                      <span className="text-[10px] font-mono font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase block mb-1">How it works</span>
+                      <h2 className="text-3xl sm:text-4xl font-light text-zinc-900 dark:text-white tracking-tight leading-tight uppercase font-sans">
+                        {selectedWarmup.title}
+                      </h2>
+                    </div>
+
+                    {/* Meta values strip details */}
+                    <div className="pt-4 border-t border-zinc-200/20 dark:border-zinc-900/40 grid grid-cols-2 gap-4 text-[10px] font-mono text-zinc-400 dark:text-zinc-550 leading-relaxed font-bold">
+                      <div className="flex flex-col">
+                        <span className="text-[8px] text-zinc-400/70 font-black">DURATION PRESET</span>
+                        <span className="text-zinc-800 dark:text-zinc-300 transition-colors uppercase flex items-center gap-1 mt-0.5"><Clock size={11} /> {selectedWarmup.duration}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[8px] text-zinc-400/70 font-black">INTERACTION FORMAT</span>
+                        <span className="text-zinc-800 dark:text-zinc-300 transition-colors uppercase flex items-center gap-1 mt-0.5"><Users size={11} /> {selectedWarmup.interaction}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[8px] text-zinc-400/70 font-black">PREPARATION STAGE</span>
+                        <span className="text-zinc-800 dark:text-zinc-300 transition-colors uppercase flex items-center gap-1 mt-0.5"><Wrench size={11} /> {selectedWarmup.preparation} Prep</span>
+                      </div>
+                      {selectedWarmup.author && (
+                        <div className="flex flex-col">
+                          <span className="text-[8px] text-zinc-400/70 font-black">REPOSITORY FACILITATOR</span>
+                          <span className="text-zinc-800 dark:text-zinc-300 transition-colors uppercase flex items-center gap-1 mt-0.5"><User size={11} /> {selectedWarmup.author.split(" ")[0]}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Objective replacing sticky note */}
+                  {selectedWarmup.description && (
+                    <div className="bg-white/40 dark:bg-zinc-900/40 text-zinc-900 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-800/80 p-5 rounded-2xl relative shadow-sm text-xs leading-relaxed font-semibold">
+                      <div className="text-[9px] font-mono tracking-widest text-zinc-500 font-extrabold uppercase mb-2">Objectives</div>
+                      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed pr-2 font-mono text-[11px]">
+                        {selectedWarmup.description}
+                      </p>
+                    </div>
+                  )}
+
+                </div>
+
+                {/* RIGHT COLUMN (8/12 width): Step cols side-by-side with dividers matching screenshot */}
+                <div className="lg:col-span-8 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-zinc-200/60 dark:divide-zinc-800/60 overflow-x-auto pb-4 -mx-2 md:mx-0">
+                  {selectedWarmup.instructions.map((step, idx) => {
+                    const stepNum = idx + 1;
+                    const totalSteps = selectedWarmup.instructions.length;
+                    
+                    return (
+                      <div 
+                        key={idx} 
+                        className="flex-1 min-w-[220px] px-2 md:px-6 lg:px-8 py-6 md:py-0 first:pl-2 first:md:pl-0 last:pr-0 flex flex-col justify-between h-full group/step transition-all"
+                      >
+                        {/* Step title label */}
+                        <div className="space-y-4">
+                          <h5 className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-zinc-450 dark:text-zinc-500">
+                            STEP {stepNum}
+                          </h5>
+                          
+                          <p className="text-zinc-700 dark:text-zinc-300 text-xs sm:text-[13px] leading-relaxed font-semibold font-sans">
+                            {step}
+                          </p>
+                        </div>
+
+                        {/* Beautiful minimalist hand-drawn diagram container sketch below */}
+                        <div className="mt-8 transition-transform duration-500 group-hover/step:scale-[1.02]">
+                          <StepIllustration 
+                            activityType={selectedWarmup.activityType} 
+                            index={idx} 
+                            total={totalSteps} 
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
               </div>
 
             </motion.div>
@@ -1362,7 +1195,7 @@ const WarmupsPage = () => {
                           y: -6,
                         }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="group relative p-6 rounded-2xl border border-zinc-200/50 dark:border-zinc-850 bg-white/40 dark:bg-zinc-900/10 backdrop-blur-xl flex flex-col justify-between h-72 cursor-pointer transition-all duration-300 shadow-xs hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-white/60 dark:hover:bg-zinc-900/20 text-zinc-950 dark:text-zinc-50 overflow-hidden"
+                        className="group relative p-6 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-900/10 backdrop-blur-xl flex flex-col justify-between h-72 cursor-pointer transition-all duration-300 shadow-xs hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-white/60 dark:hover:bg-zinc-900/20 text-zinc-950 dark:text-zinc-50 overflow-hidden"
                         id={`warmup-colorful-${warmup.id}`}
                       >
                         <div className="z-10 relative">
@@ -1389,7 +1222,7 @@ const WarmupsPage = () => {
                         </div>
 
                         {/* Beautiful Backdrop Blur Footer aligned to custom glass model */}
-                        <div className="flex items-center justify-between px-6 py-4 -mx-6 -mb-6 mt-auto z-10 relative bg-zinc-50/75 dark:bg-zinc-950/45 backdrop-blur-sm border-t border-zinc-200/50 dark:border-zinc-805/65 rounded-b-2xl transition-all duration-300 group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-950/70">
+                        <div className="flex items-center justify-between px-6 py-4 -mx-6 -mb-6 mt-auto z-10 relative bg-zinc-50/75 dark:bg-zinc-950/45 backdrop-blur-sm border-t border-zinc-200/50 dark:border-zinc-800/80 rounded-b-2xl transition-all duration-300 group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-950/70">
                           <div className="flex items-center gap-1.5 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-950 dark:group-hover:text-white group-hover:translate-x-1 duration-300 transition-all">
                             <ArrowRight size={13} className="stroke-[2.2]" />
                           </div>
@@ -1417,7 +1250,7 @@ const WarmupsPage = () => {
                         layoutId={`warmup-card-${warmup.id}`}
                         onClick={() => setSelectedWarmup(warmup)}
                         whileHover={{ y: -4 }}
-                        className="group p-6 rounded-2xl border border-zinc-200/50 dark:border-zinc-850 bg-white/40 dark:bg-zinc-900/10 backdrop-blur-md flex flex-col justify-between h-64 cursor-pointer hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-white/60 dark:hover:bg-zinc-900/20 transition-all duration-300 relative overflow-hidden"
+                        className="group p-6 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-900/10 backdrop-blur-md flex flex-col justify-between h-64 cursor-pointer hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-white/60 dark:hover:bg-zinc-900/20 transition-all duration-300 relative overflow-hidden"
                       >
                         <div>
                           <div className="flex items-center justify-between mb-4">
@@ -1437,7 +1270,7 @@ const WarmupsPage = () => {
                         </div>
 
                         {/* Premium backdrop-blurred Glass Footer */}
-                        <div className="flex items-center justify-between px-6 py-4 -mx-6 -mb-6 mt-auto z-10 relative bg-zinc-50/75 dark:bg-zinc-950/45 backdrop-blur-sm border-t border-zinc-200/50 dark:border-zinc-805/65 rounded-b-2xl transition-all duration-300 group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-950/70">
+                        <div className="flex items-center justify-between px-6 py-4 -mx-6 -mb-6 mt-auto z-10 relative bg-zinc-50/75 dark:bg-zinc-950/45 backdrop-blur-sm border-t border-zinc-200/50 dark:border-zinc-800/80 rounded-b-2xl transition-all duration-300 group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-950/70">
                           <span className="text-[9px] font-mono tracking-widest text-zinc-400 dark:text-zinc-500 uppercase">Educator // {warmup.author.split(" ")[0]}</span>
                           
                           <span className="text-[9px] font-mono font-bold text-zinc-950 dark:text-white uppercase tracking-wider flex items-center gap-1 transition-all duration-300 group-hover:translate-x-1">
@@ -1469,7 +1302,7 @@ const WarmupsPage = () => {
                         className={`flex flex-col relative overflow-hidden border backdrop-blur-xl rounded-[1.5rem] shadow-xs transition-all duration-300 ${
                           isExpanded 
                             ? `${preset.bg} ${preset.border} shadow-sm` 
-                            : "bg-white/30 dark:bg-zinc-900/10 border-zinc-200/50 dark:border-zinc-850 hover:bg-zinc-100/30 dark:hover:bg-zinc-805/20"
+                            : "bg-white/30 dark:bg-zinc-900/10 border-zinc-200/50 dark:border-zinc-800/80 hover:bg-zinc-100/30 dark:hover:bg-zinc-805/20"
                         } group`}
                       >
                         {/* Accordion Row Header */}
@@ -1523,7 +1356,7 @@ const WarmupsPage = () => {
                               transition={{ duration: 0.28, ease: "easeInOut" }}
                               className="overflow-hidden"
                             >
-                              <div className="px-6 pb-6 pt-2 border-t border-zinc-200/20 dark:border-zinc-900/60 grid grid-cols-1 lg:grid-cols-12 gap-6 bg-zinc-50/10 dark:bg-zinc-950/25 backdrop-blur-md">
+                              <div className="px-6 pb-6 pt-2 border-t border-zinc-200/50 dark:border-zinc-800/80 grid grid-cols-1 lg:grid-cols-12 gap-6 bg-zinc-50/10 dark:bg-zinc-950/25 backdrop-blur-md">
                                 <div className="lg:col-span-4 space-y-4">
                                   <div>
                                     <span className="text-[9px] font-mono font-black uppercase text-zinc-400 dark:text-zinc-500 tracking-wider">Objective</span>
@@ -1554,9 +1387,9 @@ const WarmupsPage = () => {
                                       {warmup.instructions.map((step, idx) => (
                                         <div 
                                           key={idx} 
-                                          className="bg-white/45 dark:bg-zinc-955/15 backdrop-blur-md rounded-xl border border-zinc-200/40 dark:border-zinc-850/60 p-3.5 shadow-3xs flex gap-3.5 items-start hover:border-zinc-350 dark:hover:border-zinc-800 transition-all duration-300"
+                                          className="bg-white/45 dark:bg-zinc-900/15 backdrop-blur-md rounded-xl border border-zinc-200/50 dark:border-zinc-800/80 p-3.5 shadow-3xs flex gap-3.5 items-start hover:border-zinc-350 dark:hover:border-zinc-800 transition-all duration-300"
                                         >
-                                          <span className="w-5.5 h-5.5 rounded-lg shrink-0 flex items-center justify-center text-[9px] font-mono font-black bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 border border-zinc-850 dark:border-zinc-200">
+                                          <span className={`w-5.5 h-5.5 rounded-lg shrink-0 flex items-center justify-center text-[9px] font-mono font-black ${activeTheme.primaryBg}`}>
                                             {idx + 1}
                                           </span>
                                           <div className="flex-1">
@@ -1573,7 +1406,7 @@ const WarmupsPage = () => {
                                   <div className="flex justify-end mt-4 gap-2 pt-4 border-t border-zinc-200/10 dark:border-zinc-900/40">
                                     <button
                                       onClick={() => setSelectedWarmup(warmup)}
-                                      className="flex items-center gap-1.5 px-4 py-1.5 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 text-[10px] font-black uppercase tracking-widest rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-xs"
+                                      className={`flex items-center gap-1.5 px-4 py-1.5 ${activeTheme.primaryBg} text-[10px] font-black uppercase tracking-widest rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-xs`}
                                     >
                                       <span>Open immersive view</span>
                                       <PlayCircle size={12} className="stroke-[2.2]" />
@@ -1593,7 +1426,7 @@ const WarmupsPage = () => {
               {/* Wide Minimalist Pagination System */}
               {totalPages > 1 && (
                 <div className="mt-12 w-full" id="pagination-wrapper-card">
-                  <div className="flex w-full items-center justify-between px-6 py-4 sm:px-8 rounded-3xl border border-zinc-200/40 dark:border-zinc-850/60 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-3xl" id="pagination-controls-bar">
+                  <div className="flex w-full items-center justify-between px-6 py-4 sm:px-8 rounded-3xl border border-zinc-200/50 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-3xl" id="pagination-controls-bar">
                     <button
                        onClick={() => {
                          if (currentPage > 1) {
@@ -1606,8 +1439,8 @@ const WarmupsPage = () => {
                        disabled={currentPage === 1}
                        className={`px-4 py-1.5 rounded-xl border transition-all duration-300 flex items-center gap-1.5 justify-center cursor-pointer ${
                          currentPage === 1
-                           ? "bg-zinc-100/35 dark:bg-zinc-900/30 border-zinc-200/30 dark:border-zinc-850/30 text-zinc-350 dark:text-zinc-700 cursor-not-allowed opacity-40"
-                           : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 active:scale-95"
+                           ? "bg-zinc-100/35 dark:bg-zinc-900/30 border-zinc-200/30 dark:border-zinc-800/40 text-zinc-400 dark:text-zinc-600 cursor-not-allowed opacity-40"
+                           : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-800/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/50 dark:border-zinc-800/80 active:scale-95"
                        }`}
                        title="Previous Page"
                        id="pagination-prev-btn"
@@ -1630,8 +1463,8 @@ const WarmupsPage = () => {
                             }}
                             className={`w-8 h-8 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 active:scale-95 cursor-pointer border flex items-center justify-center ${
                               currentPage === pageNumber
-                                ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 border-zinc-950 dark:border-white scale-[1.02]"
-                                : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60"
+                                ? `${activeTheme.primaryBg} border-transparent scale-[1.02]`
+                                : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-800/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/50 dark:border-zinc-800/80"
                             }`}
                             id={`pagination-page-${pageNumber}`}
                           >
@@ -1653,8 +1486,8 @@ const WarmupsPage = () => {
                       disabled={currentPage === totalPages}
                       className={`px-4 py-1.5 rounded-xl border transition-all duration-300 flex items-center gap-1.5 justify-center cursor-pointer ${
                         currentPage === totalPages
-                          ? "bg-zinc-100/35 dark:bg-zinc-900/30 border-zinc-200/30 dark:border-zinc-850/30 text-zinc-350 dark:text-zinc-700 cursor-not-allowed opacity-40"
-                          : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-805/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/80 dark:border-zinc-850/60 active:scale-95"
+                          ? "bg-zinc-100/35 dark:bg-zinc-900/30 border-zinc-200/30 dark:border-zinc-800/40 text-zinc-400 dark:text-zinc-600 cursor-not-allowed opacity-40"
+                          : "bg-white/60 hover:bg-white dark:bg-zinc-900/35 dark:hover:bg-zinc-800/60 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white border-zinc-200/50 dark:border-zinc-800/80 active:scale-95"
                       }`}
                       title="Next Page"
                       id="pagination-next-btn"
@@ -1686,7 +1519,7 @@ const WarmupsPage = () => {
 
               <button 
                 onClick={resetFilters}
-                className="px-6 py-2.5 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 text-xs font-bold uppercase tracking-widest rounded-full hover:opacity-90 transition-all cursor-pointer shadow-md"
+                className={`px-6 py-2.5 ${activeTheme.primaryBg} text-xs font-bold uppercase tracking-widest rounded-full hover:opacity-90 transition-all cursor-pointer shadow-md`}
               >
                 Reset active search filters
               </button>
@@ -1695,6 +1528,165 @@ const WarmupsPage = () => {
         </AnimatePresence>
 
         </div>
+
+        {/* Minimalist divider line with technical accent label */}
+        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-zinc-250 dark:via-zinc-800 to-transparent my-24 relative" id="laboratory-divider">
+          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-50 dark:bg-zinc-950 px-6 py-1 text-[9px] font-mono tracking-widest text-zinc-400 dark:text-zinc-500 uppercase font-bold transition-colors duration-1000">
+            Atmosphere Laboratory
+          </div>
+        </div>
+
+        {/* Elegant Laboratory Interactive Core Section */}
+        <div className="w-full flex flex-col lg:flex-row gap-12 items-stretch justify-between mb-8" id="laboratory-section">
+          {/* Left: Section Header with bold, clean typography and minimal info-graphic */}
+          <div className="w-full lg:w-1/3 flex flex-col justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Cpu className="text-zinc-650 dark:text-zinc-400 animate-pulse" size={15} />
+                <span className="text-[10px] font-mono font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                  SYSTEMIC SYNERGY
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-white uppercase leading-none font-sans">
+                ENGAGEMENT <br />FORMULAS
+              </h2>
+              <p className="text-zinc-500 dark:text-zinc-455 text-xs leading-relaxed font-semibold font-sans">
+                Interactive blueprint matrices for tuning classroom focus. Choose a catalyst mode below to calibrate tactile and cognitive activity.
+              </p>
+            </div>
+
+            {/* Elegant selection buttons in shades of Zinc with backdrop filters */}
+            <div className="flex flex-col gap-2.5 w-full font-mono">
+              {Object.entries(formulaData).map(([key, item]) => {
+                const isActive = activeFormulaId === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setActiveFormulaId(key)}
+                    className={`w-full text-left p-4 rounded-2xl border backdrop-blur-xl transition-all duration-350 cursor-pointer text-xs flex items-center justify-between ${
+                      isActive
+                        ? "bg-zinc-950 dark:bg-zinc-100 border-transparent text-white dark:text-zinc-955 shadow-md font-bold scale-[1.015]"
+                        : "bg-white/40 dark:bg-zinc-900/10 border-zinc-200/50 dark:border-zinc-800/40 text-zinc-505 dark:text-zinc-400 hover:bg-zinc-200/60 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-white"
+                    }`}
+                    id={`catalyst-btn-${key}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? "bg-white dark:bg-zinc-950 scale-125" : "bg-zinc-450 dark:bg-zinc-600"}`} />
+                      <span className="uppercase tracking-widest text-[9px] font-black">{item.title}</span>
+                    </div>
+                    <ArrowRight size={13} className={`transition-transform duration-300 ${isActive ? "translate-x-1" : ""}`} />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right: Interactive Formula Engine with backdrop filters + status cards */}
+          <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            
+            {/* Card 1: Synergy Metric Bars with elegant backdrop blur */}
+            <div className="p-8 rounded-[2rem] border border-zinc-200/50 dark:border-zinc-805/40 bg-white/40 dark:bg-zinc-900/10 backdrop-blur-xl hover:shadow-2xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-all duration-500 flex flex-col justify-between min-h-[290px]" id="metric-bars-panel">
+              <div className="space-y-5 w-full">
+                <div className="flex justify-between items-center border-b border-zinc-200/40 dark:border-zinc-800/60 pb-3">
+                  <span className="text-[9px] font-mono tracking-widest font-black uppercase text-zinc-400 dark:text-zinc-500">
+                    ATMOSPHERE INDEX
+                  </span>
+                  <span className="text-[9px] font-mono font-bold text-zinc-400 dark:text-zinc-550">
+                    {formulaData[activeFormulaId].spark}
+                  </span>
+                </div>
+
+                <div className="space-y-4 pt-2">
+                  {/* Metric 1 */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                      <span>{formulaData[activeFormulaId].metric1}</span>
+                      <span className="text-zinc-900 dark:text-white font-black">{formulaData[activeFormulaId].val1}%</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-zinc-200/40 dark:bg-zinc-900/60 rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${formulaData[activeFormulaId].val1}%` }}
+                        transition={{ duration: 0.45, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Metric 2 */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                      <span>{formulaData[activeFormulaId].metric2}</span>
+                      <span className="text-zinc-900 dark:text-white font-black">{formulaData[activeFormulaId].val2}%</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-zinc-200/40 dark:bg-zinc-900/60 rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${formulaData[activeFormulaId].val2}%` }}
+                        transition={{ duration: 0.45, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Metric 3 */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                      <span>{formulaData[activeFormulaId].metric3}</span>
+                      <span className="text-zinc-900 dark:text-white font-black">{formulaData[activeFormulaId].val3}%</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-zinc-200/40 dark:bg-zinc-900/60 rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${formulaData[activeFormulaId].val3}%` }}
+                        transition={{ duration: 0.45, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-[8px] font-mono tracking-wider text-zinc-400 dark:text-zinc-500 uppercase font-black pt-4 border-t border-zinc-200/20 dark:border-zinc-800/40 mt-6">
+                Active Synthesis Metrics
+              </div>
+            </div>
+
+            {/* Card 2: Blueprint Details with elegant backdrop blur */}
+            <div className="p-8 rounded-[2rem] border border-zinc-200/50 dark:border-zinc-805/40 bg-zinc-100/10 dark:bg-zinc-905/10 backdrop-blur-xl hover:shadow-2xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/20 dark:hover:bg-zinc-900/15 transition-all duration-500 flex flex-col justify-between min-h-[290px]" id="blueprint-details-panel">
+              <div className="space-y-5">
+                <div className="flex justify-between items-center border-b border-zinc-200/40 dark:border-zinc-800/60 pb-3">
+                  <span className="text-[9px] font-mono tracking-widest font-black uppercase text-zinc-400 dark:text-zinc-500">
+                    TACTICAL BLUEPRINT
+                  </span>
+                  <div className="p-2 rounded-2xl bg-zinc-200/40 dark:bg-zinc-800/40 text-zinc-650 dark:text-zinc-350 shadow-sm">
+                    <Wrench size={14} className="stroke-[2]" />
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-1">
+                  <h4 className="text-[10px] font-mono uppercase text-zinc-400 dark:text-zinc-500 font-black tracking-widest">
+                    OPERATIONAL PROTOCOL
+                  </h4>
+                  <p className="text-zinc-600 dark:text-zinc-300 text-xs sm:text-[13px] leading-relaxed font-semibold font-sans">
+                    {formulaData[activeFormulaId].blueprint}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 pt-4 border-t border-zinc-205/15 dark:border-zinc-800/40 mt-6">
+                <div className="w-5.5 h-5.5 rounded-full bg-zinc-950/10 dark:bg-white/10 flex items-center justify-center border border-zinc-250/20 dark:border-zinc-750/35">
+                  <Flame size={11} className="text-zinc-600 dark:text-zinc-300" />
+                </div>
+                <span className="text-[8px] font-mono tracking-widest text-zinc-400 dark:text-zinc-500 uppercase font-black">
+                  Warmedia Pedagogical Engine
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
     </div>
