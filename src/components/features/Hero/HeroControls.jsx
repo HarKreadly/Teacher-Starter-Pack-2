@@ -184,7 +184,6 @@ const HeroControls = ({
                 {/* Header Navigation */}
                 <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
                   <div className="flex items-center gap-3">
-                    <span className={`w-1.5 h-6 rounded-full ${activeTheme.primaryBg}`} />
                     <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 dark:text-zinc-550">
                       Release Notes
                     </span>

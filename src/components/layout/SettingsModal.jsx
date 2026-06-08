@@ -10,26 +10,24 @@ import { useSettings, THEMES } from "../../context/SettingsContext";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "next-themes";
 
-/* ─── Toggle Row Card ─── */
 const ToggleRow = ({ icon: Icon, title, desc, value, onChange }) => {
-  const { activeTheme } = useSettings();
   return (
     <div 
       onClick={onChange}
       className="flex items-center gap-4 py-3.5 px-4 rounded-2xl border border-zinc-250/20 dark:border-zinc-850/40 bg-white/20 dark:bg-zinc-950/20 backdrop-blur-md transition-all duration-300 hover:border-zinc-350 dark:hover:border-zinc-800 cursor-pointer active:scale-[0.99]"
     >
-      <div className={`p-2 rounded-xl transition-colors duration-300 ${value ? `${activeTheme.primaryBg} shadow-sm border ${activeTheme.border}` : 'bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-400 dark:text-zinc-550 border border-transparent'}`}>
+      <div className="p-2 rounded-xl bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-500 dark:text-zinc-400/90 border border-transparent select-none shrink-0">
         <Icon size={15} className="stroke-[2]" />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-xs font-bold uppercase tracking-tight text-zinc-950 dark:text-zinc-100 truncate">{title}</p>
         <p className="text-[10px] text-zinc-450 dark:text-zinc-500 mt-0.5 leading-relaxed font-semibold">{desc}</p>
       </div>
-      <div className="flex items-center rounded-xl p-1 bg-zinc-200/50 dark:bg-zinc-900 border border-zinc-200/40 dark:border-zinc-800 shrink-0 select-none">
-        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${value ? `${activeTheme.primaryBg} shadow-xs text-zinc-900 dark:text-white` : 'text-zinc-400 dark:text-zinc-500'}`}>
+      <div className="flex items-center rounded-xl p-1 bg-zinc-100/80 dark:bg-zinc-900/40 border border-zinc-250/30 dark:border-zinc-805/50 shrink-0 select-none">
+        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${value ? 'bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xs' : 'text-zinc-400 dark:text-zinc-550'}`}>
           On
         </div>
-        <div className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${!value ? 'bg-white dark:bg-zinc-800 shadow-xs text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-500'}`}>
+        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${!value ? 'bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 shadow-xs' : 'text-zinc-400 dark:text-zinc-550'}`}>
           Off
         </div>
       </div>
@@ -412,7 +410,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
             {/* Top Bar / Header */}
             <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
               <div className="flex items-center gap-3">
-                <span className={`w-1.5 h-6 rounded-full ${activeTheme.primaryBg}`} id="settings-pbar-indicator" />
                 <span className="text-[10px] font-black tracking-[0.3em] uppercase text-zinc-400 dark:text-zinc-550">Settings Panel</span>
               </div>
               <button

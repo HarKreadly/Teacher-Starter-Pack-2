@@ -6,6 +6,8 @@ const GlobalCursor = () => {
   const { cursorEnabled } = useSettings();
   const [isMobile, setIsMobile] = useState(false);
 
+  const [isHovered, setIsHovered] = useState(false);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -25,9 +27,26 @@ const GlobalCursor = () => {
       mouseY.set(e.clientY);
     };
 
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      if (
+        target &&
+        (target.closest("a") ||
+          target.closest("button") ||
+          target.closest("[role='button']") ||
+          target.closest(".cursor-pointer") ||
+          (target.style && target.style.cursor === "pointer"))
+      ) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
+
     if (!isMobile && cursorEnabled) {
       window.addEventListener("mousemove", handleMouseMove);
-      // Removed: document.body.style.cursor = "none";
+      window.addEventListener("mouseover", handleMouseOver);
+      document.body.style.cursor = "none";
     } else {
       document.body.style.cursor = "auto";
     }
@@ -35,6 +54,7 @@ const GlobalCursor = () => {
     return () => {
       window.removeEventListener("resize", checkMobile);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseover", handleMouseOver);
       document.body.style.cursor = "auto";
     };
   }, [isMobile, cursorEnabled, mouseX, mouseY]);
@@ -54,8 +74,8 @@ const GlobalCursor = () => {
       <motion.div
         className="rounded-full bg-white opacity-40 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
         animate={{
-          width: 40,  // Static size
-          height: 40, // Static size
+          width: isHovered ? 56 : 32,
+          height: isHovered ? 56 : 32,
         }}
         transition={{
           type: "spring",
@@ -65,8 +85,8 @@ const GlobalCursor = () => {
       />
       
       {/* Small Core Dot */}
-      <div className="absolute inset-0 flex items-center justify-center">
-         <div className="w-1 h-1 bg-white rounded-full opacity-80" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+         <div className={`w-1.5 h-1.5 bg-white rounded-full transition-all duration-300 ${isHovered ? "scale-150 opacity-95" : "scale-100 opacity-80"}`} />
       </div>
     </motion.div>
   );

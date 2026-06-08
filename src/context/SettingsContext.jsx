@@ -121,10 +121,26 @@ const SettingsContext = createContext();
 export const useSettings = () => useContext(SettingsContext);
 
 export const SettingsProvider = ({ children }) => {
+  // --- One-time reset of widget settings to default to false ---
+  useState(() => {
+    const migrated = localStorage.getItem("harkreadly_widget_migrated_to_new_set");
+    if (!migrated) {
+      localStorage.removeItem("harkreadly_showtime");
+      localStorage.removeItem("harkreadly_showdate");
+      localStorage.removeItem("harkreadly_showcalendar");
+      localStorage.removeItem("harkreadly_showquotation");
+      localStorage.removeItem("harkreadly_showrotationspeed");
+      localStorage.removeItem("harkreadly_showtextsizewidget");
+      localStorage.setItem("harkreadly_widget_migrated_to_new_set", "true");
+    }
+  });
+
   // --- Persistent States ---
   const [colorTheme, setColorTheme] = useState(() => {
     const saved = localStorage.getItem("harkreadly_colortheme");
-    return saved !== null && Object.keys(THEMES).includes(JSON.parse(saved)) ? JSON.parse(saved) : "creamsicle"; 
+    const parsed = saved !== null ? JSON.parse(saved) : null;
+    if (!parsed || parsed === "creamsicle") return "zinc";
+    return Object.keys(THEMES).includes(parsed) ? parsed : "zinc"; 
   });
 
   const [cursorEnabled, setCursorEnabled] = useState(() => {
@@ -134,7 +150,9 @@ export const SettingsProvider = ({ children }) => {
 
   const [dispersionCursorEnabled, setDispersionCursorEnabled] = useState(() => {
     const saved = localStorage.getItem("harkreadly_dispersion_cursor");
-    return saved !== null ? JSON.parse(saved) : true;
+    const parsed = saved !== null ? JSON.parse(saved) : null;
+    if (parsed === null || parsed === true) return false;
+    return parsed;
   });
 
   const [animationsEnabled, setAnimationsEnabled] = useState(() => {
@@ -201,22 +219,22 @@ export const SettingsProvider = ({ children }) => {
 
   const [showTime, setShowTime] = useState(() => {
     const saved = localStorage.getItem("harkreadly_showtime");
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [showDate, setShowDate] = useState(() => {
     const saved = localStorage.getItem("harkreadly_showdate");
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [showCalendar, setShowCalendar] = useState(() => {
     const saved = localStorage.getItem("harkreadly_showcalendar");
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [showQuotation, setShowQuotation] = useState(() => {
     const saved = localStorage.getItem("harkreadly_showquotation");
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [showSearchBar, setShowSearchBar] = useState(() => {
@@ -226,12 +244,12 @@ export const SettingsProvider = ({ children }) => {
 
   const [showRotationSpeed, setShowRotationSpeed] = useState(() => {
     const saved = localStorage.getItem("harkreadly_showrotationspeed");
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [showTextSizeWidget, setShowTextSizeWidget] = useState(() => {
     const saved = localStorage.getItem("harkreadly_showtextsizewidget");
-    return saved !== null ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : false;
   });
 
   const [showWhatsNew, setShowWhatsNew] = useState(() => {
@@ -279,7 +297,7 @@ export const SettingsProvider = ({ children }) => {
     }
   }, [acrylicEnabled]);
 
-  const activeTheme = THEMES[colorTheme] || THEMES.creamsicle;
+  const activeTheme = THEMES[colorTheme] || THEMES.zinc;
 
   return (
     <SettingsContext.Provider value={{ 
