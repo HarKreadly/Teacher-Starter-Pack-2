@@ -232,7 +232,7 @@ const Navbar = () => {
         {/* LEFT DOCK */}
         <motion.div
           ref={leftNavRef}
-          className="pointer-events-auto flex items-center gap-4 px-4 md:px-5 py-2.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/80 bg-white/75 dark:bg-zinc-950/75 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] text-sm transition-colors duration-300"
+          className="pointer-events-auto flex items-center gap-2 sm:gap-4 px-3 sm:px-4 md:px-5 py-2.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/80 bg-white/75 dark:bg-zinc-950/75 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] text-sm transition-colors duration-300 shrink-0 max-w-full"
           onMouseLeave={handleLeftMouseLeave}
         >
           <button
@@ -304,40 +304,40 @@ const Navbar = () => {
                 </Link>
               );
             })}
+          </div>
 
-            <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800/80 mx-2 shrink-0" />
+          <div className="hidden sm:block h-5 w-px bg-zinc-200 dark:bg-zinc-800/80 mx-2 lg:mx-0 shrink-0" />
 
-            <div className="flex items-center gap-1.5 shrink-0">
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full text-zinc-700 dark:text-zinc-300 hover:text-zinc-955 dark:hover:text-white bg-zinc-100/50 dark:bg-zinc-900/40 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/70 transition-all duration-300 hover:scale-105 cursor-pointer flex items-center justify-center"
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
+          <div className="hidden sm:flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-full text-zinc-700 dark:text-zinc-300 hover:text-zinc-955 dark:hover:text-white bg-zinc-100/50 dark:bg-zinc-900/40 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/70 transition-all duration-300 hover:scale-105 cursor-pointer flex items-center justify-center"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
 
-              <LanguageSelector />
-            </div>
+            <LanguageSelector />
           </div>
         </motion.div>
 
         {/* RIGHT DOCK */}
         <motion.div
           ref={rightNavRef}
-          className="pointer-events-auto flex items-center gap-2.5 px-4 md:px-5 py-2.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/80 bg-white/75 dark:bg-zinc-950/75 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] text-sm transition-colors duration-300 relative shrink-0"
+          className="pointer-events-auto flex items-center gap-2 px-3 sm:px-4 md:px-5 py-2.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/80 bg-white/75 dark:bg-zinc-950/75 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] text-sm transition-colors duration-300 relative shrink-0 min-w-0"
           onMouseLeave={handleRightMouseLeave}
         >
           <Link
             to={activeItem.link}
             ref={rightBadgeRef}
-            className={`relative px-3 py-1.5 rounded-full font-sans font-bold text-[10px] tracking-widest uppercase shadow-xs cursor-pointer flex items-center gap-1.5 transition-colors duration-300 border ${activeTheme.primaryBg} border-transparent`}
+            className={`relative px-3 py-1.5 rounded-full font-sans font-bold text-[10px] tracking-widest uppercase shadow-xs cursor-pointer flex items-center gap-1.5 transition-colors duration-300 border ${activeTheme.primaryBg} border-transparent min-w-0`}
             onMouseEnter={() => handleRightMouseEnter(activeItem)}
           >
-            <span>{activeItem.name}</span>
+            <span className="truncate max-w-[80px] sm:max-w-none">{activeItem.name}</span>
             {activeItem && activeItem.dropdown && (
               <ChevronDown
                 size={11}
-                className={`transition-transform duration-300 ${activeRightDropdown ? "rotate-180" : ""}`}
+                className={`transition-transform duration-300 shrink-0 ${activeRightDropdown ? "rotate-180" : ""}`}
               />
             )}
           </Link>

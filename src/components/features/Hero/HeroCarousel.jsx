@@ -62,7 +62,7 @@ const HeroCarousel = ({ currentQuote, nextQuote, prevQuote, fontSize, currentSli
   };
 
   return (
-    <div className={`${className} flex flex-col items-center justify-between min-h-[75vh] lg:h-full order-1 lg:order-2 relative z-10 w-full pb-16 lg:pb-8 pt-4`}>
+    <div className={`${className} flex flex-col items-center justify-between min-h-[60vh] md:min-h-0 lg:h-full order-1 lg:order-2 relative z-10 w-full pb-10 md:pb-6 lg:pb-8 pt-4`}>
       
       {/* Top Spacer */}
       <div className="flex-1 w-full min-h-[2vh] lg:min-h-0" />

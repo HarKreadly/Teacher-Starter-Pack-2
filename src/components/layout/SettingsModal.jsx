@@ -23,11 +23,11 @@ const ToggleRow = ({ icon: Icon, title, desc, value, onChange }) => {
         <p className="text-xs font-bold uppercase tracking-tight text-zinc-950 dark:text-zinc-100 truncate">{title}</p>
         <p className="text-[10px] text-zinc-450 dark:text-zinc-500 mt-0.5 leading-relaxed font-semibold">{desc}</p>
       </div>
-      <div className="flex items-center rounded-xl p-1 bg-zinc-100/80 dark:bg-zinc-900/40 border border-zinc-250/30 dark:border-zinc-805/50 shrink-0 select-none">
-        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${value ? 'bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xs' : 'text-zinc-400 dark:text-zinc-550'}`}>
+      <div className="flex items-center rounded-xl p-1 bg-zinc-200/50 dark:bg-zinc-900/40 border border-zinc-200/40 dark:border-zinc-800/50 shrink-0 select-none">
+        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${value ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-sm' : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}>
           On
         </div>
-        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${!value ? 'bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 shadow-xs' : 'text-zinc-400 dark:text-zinc-550'}`}>
+        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${!value ? 'bg-white text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm' : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'}`}>
           Off
         </div>
       </div>
@@ -405,7 +405,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-6 z-[101] flex flex-col border border-zinc-250/20 dark:border-zinc-850 bg-white/45 dark:bg-zinc-950/30 backdrop-blur-3xl rounded-[2rem] shadow-2xl overflow-hidden text-left"
+            className="fixed inset-4 sm:inset-6 z-[101] flex flex-col border border-zinc-250/20 dark:border-zinc-850 bg-white/45 dark:bg-zinc-950/30 backdrop-blur-3xl rounded-[2rem] shadow-2xl overflow-hidden text-left"
           >
             {/* Top Bar / Header */}
             <div className="shrink-0 w-full px-6 sm:px-8 pt-6 pb-4 flex justify-between items-center border-b border-zinc-250/20 dark:border-zinc-900/40">
