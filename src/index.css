@@ -282,7 +282,93 @@ html.light {
   backdrop-filter: none !important;
 }
 
+.disable-acrylic * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Fallback static solid colors when acrylic/backdrop-blur is disabled */
+.disable-acrylic .backdrop-blur-sm,
+.disable-acrylic .backdrop-blur-md,
+.disable-acrylic .backdrop-blur-lg,
+.disable-acrylic .backdrop-blur-xl,
+.disable-acrylic .backdrop-blur-2xl,
+.disable-acrylic .backdrop-blur-3xl,
+.disable-acrylic .backdrop-blur,
+.performance-mode .backdrop-blur-sm,
+.performance-mode .backdrop-blur-md,
+.performance-mode .backdrop-blur-lg,
+.performance-mode .backdrop-blur-xl,
+.performance-mode .backdrop-blur-2xl,
+.performance-mode .backdrop-blur-3xl,
+.performance-mode .backdrop-blur {
+  background-color: var(--color-white, #ffffff) !important;
+}
+
+html.dark.disable-acrylic .backdrop-blur-sm,
+html.dark.disable-acrylic .backdrop-blur-md,
+html.dark.disable-acrylic .backdrop-blur-lg,
+html.dark.disable-acrylic .backdrop-blur-xl,
+html.dark.disable-acrylic .backdrop-blur-2xl,
+html.dark.disable-acrylic .backdrop-blur-3xl,
+html.dark.disable-acrylic .backdrop-blur,
+html.dark.performance-mode .backdrop-blur-sm,
+html.dark.performance-mode .backdrop-blur-md,
+html.dark.performance-mode .backdrop-blur-lg,
+html.dark.performance-mode .backdrop-blur-xl,
+html.dark.performance-mode .backdrop-blur-2xl,
+html.dark.performance-mode .backdrop-blur-3xl,
+html.dark.performance-mode .backdrop-blur {
+  background-color: var(--color-zinc-950, #09090b) !important;
+}
+
 /* ── Custom Scrollbar Utilities ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(161, 161, 170, 0.25); /* zinc-400 with opacity */
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 113, 122, 0.45); /* zinc-500 with opacity */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(82, 82, 91, 0.65); /* zinc-600 */
+}
+
+/* Dark mode scrollbars */
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(82, 82, 91, 0.35); /* zinc-600 with opacity */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(161, 161, 170, 0.55); /* zinc-450 with opacity */
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+  background: rgba(228, 228, 231, 0.75); /* zinc-200 */
+}
+
+/* Firefox scrollbars */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(161, 161, 170, 0.25) transparent;
+}
+
+.dark html {
+  scrollbar-color: rgba(82, 82, 91, 0.35) transparent;
+}
+
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }

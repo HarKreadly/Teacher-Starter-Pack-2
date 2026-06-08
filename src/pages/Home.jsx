@@ -19,12 +19,6 @@ const Home = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentQuote, setCurrentQuote] = useState(0);
-  const [dateTime, setDateTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setDateTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -50,9 +44,20 @@ const Home = () => {
   const isLeftVisible = widgetsEnabled && (showRotationSpeed || showTextSizeWidget || showWhatsNew);
   const isRightVisible = widgetsEnabled && (showTime || showDate || showCalendar);
 
-  let colSpanClass = "lg:col-span-6 lg:col-start-4";
+  // Tablet and Desktop Column configuration mappings
+  let leftColClass = "md:col-span-1 lg:col-span-3 order-3 md:order-2 lg:order-1 px-4 md:px-0 lg:pl-8";
+  if (isLeftVisible && !isRightVisible) {
+    leftColClass = "md:col-span-2 lg:col-span-3 order-3 md:order-2 lg:order-1 px-4 md:px-0 lg:pl-8";
+  }
+
+  let rightColClass = "md:col-span-1 lg:col-span-3 order-2 md:order-3 lg:order-3 px-4 md:px-0 lg:pr-8 mt-12 md:mt-0";
+  if (!isLeftVisible && isRightVisible) {
+    rightColClass = "md:col-span-2 lg:col-span-3 order-2 md:order-3 lg:order-3 px-4 md:px-0 lg:pr-8 mt-12 md:mt-0";
+  }
+
+  let colSpanClass = "md:col-span-2 lg:col-span-6 lg:col-start-4";
   if (!isLeftVisible && !isRightVisible) {
-    colSpanClass = "lg:col-span-12 max-w-4xl mx-auto";
+    colSpanClass = "md:col-span-2 lg:col-span-12 max-w-4xl mx-auto";
   }
 
   return (
@@ -84,13 +89,13 @@ const Home = () => {
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(255,255,255,0.4)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,rgba(24,24,27,0.95)_100%)] pointer-events-none transition-all duration-500"></div>
 
         {/* Main Content Grid */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 min-h-dvh pt-32 pb-10 px-4 md:px-8 lg:px-16 gap-8 items-center">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 min-h-dvh pt-32 pb-10 px-4 md:px-8 lg:px-16 gap-8 items-center">
           <HeroControls
-            dateTime={dateTime}
             fontSize={fontSize}
             setFontSize={setFontSize}
             autoPlaySpeed={autoPlaySpeed}
             setAutoPlaySpeed={setAutoPlaySpeed}
+            className={leftColClass}
           />
 
           <HeroCarousel
@@ -103,7 +108,7 @@ const Home = () => {
           />
 
           <HeroInfo
-            dateTime={dateTime}
+            className={rightColClass}
           />
         </div>
       </div>

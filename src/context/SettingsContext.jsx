@@ -157,6 +157,11 @@ export const SettingsProvider = ({ children }) => {
     return saved !== null ? JSON.parse(saved) : true; // Film grain default true
   });
 
+  const [acrylicEnabled, setAcrylicEnabled] = useState(() => {
+    const saved = localStorage.getItem("harkreadly_acrylic");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
   const [performanceMode, setPerformanceMode] = useState(() => {
     const saved = localStorage.getItem("harkreadly_performance");
     return saved !== null ? JSON.parse(saved) : false;
@@ -243,6 +248,7 @@ export const SettingsProvider = ({ children }) => {
     localStorage.setItem("harkreadly_sparks", JSON.stringify(sparksEnabled));
     localStorage.setItem("harkreadly_particles", JSON.stringify(floatingParticles));
     localStorage.setItem("harkreadly_scanlines", JSON.stringify(scanlines));
+    localStorage.setItem("harkreadly_acrylic", JSON.stringify(acrylicEnabled));
     localStorage.setItem("harkreadly_performance", JSON.stringify(performanceMode));
     localStorage.setItem("harkreadly_smoothscroll", JSON.stringify(smoothScroll));
     localStorage.setItem("harkreadly_autoplay", JSON.stringify(autoPlaySpeed));
@@ -259,11 +265,19 @@ export const SettingsProvider = ({ children }) => {
     localStorage.setItem("harkreadly_showwhatsnew", JSON.stringify(showWhatsNew));
   }, [
     colorTheme, cursorEnabled, dispersionCursorEnabled, animationsEnabled, sparksEnabled, floatingParticles, 
-    scanlines, performanceMode, smoothScroll, 
+    scanlines, acrylicEnabled, performanceMode, smoothScroll, 
     autoPlaySpeed, fontSize, backdropBlur, widgetsEnabled,
     showTime, showDate, showCalendar, showQuotation, showSearchBar,
     showRotationSpeed, showTextSizeWidget, showWhatsNew
   ]);
+
+  useEffect(() => {
+    if (!acrylicEnabled) {
+      document.documentElement.classList.add("disable-acrylic");
+    } else {
+      document.documentElement.classList.remove("disable-acrylic");
+    }
+  }, [acrylicEnabled]);
 
   const activeTheme = THEMES[colorTheme] || THEMES.creamsicle;
 
@@ -276,6 +290,7 @@ export const SettingsProvider = ({ children }) => {
       sparksEnabled, setSparksEnabled,
       floatingParticles, setFloatingParticles,
       scanlines, setScanlines,
+      acrylicEnabled, setAcrylicEnabled,
       performanceMode, setPerformanceMode,
       smoothScroll, setSmoothScroll,
       autoPlaySpeed, setAutoPlaySpeed,

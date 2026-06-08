@@ -9,6 +9,7 @@ const HeroControls = ({
   setFontSize,
   autoPlaySpeed,
   setAutoPlaySpeed,
+  className = "",
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [activeVersionId, setActiveVersionId] = useState("v1.3");
@@ -61,7 +62,7 @@ const HeroControls = ({
   if (!speedVisible && !sizeVisible && !whatsNewVisible) return null;
 
   return (
-    <div className="lg:col-span-3 flex flex-col h-full py-6 lg:py-10 order-3 lg:order-1 px-4 md:px-8 lg:pl-8 relative z-40">
+    <div className={`${className} flex flex-col h-full py-6 lg:py-10 relative z-40`}>
       
       {/* Wrapper to push everything to the bottom */}
       <div className="mt-auto flex flex-col gap-4 w-full max-w-[280px] mx-auto lg:mx-0">

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { 
   Search, Grid, List, Clock, User, 
-  X, ChevronLeft, ChevronRight, ChevronDown, PlayCircle, RefreshCw, 
+  X, ChevronLeft, ChevronRight, ChevronDown, RefreshCw, 
   Download, ArrowLeft, ArrowRight, Paperclip,
   Sliders, Timer, Users, Cpu, Flame, LayoutGrid, Wrench
 } from "lucide-react";
@@ -402,42 +402,6 @@ const stickyNotePresets = {
   }
 };
 
-const formulaData = {
-  voltage: {
-    title: "High Voltage Kinetic",
-    metric1: "Kinesthetic Drive",
-    val1: 95,
-    metric2: "Cognitive Load",
-    val2: 30,
-    metric3: "Social Resonance",
-    val3: 85,
-    spark: "ZINC-800 // SENSORY_SHIELD",
-    blueprint: "Convert static desk positions to rotating nodes every 120 seconds. High frequency physical handovers reduce screen fatigue."
-  },
-  dialectic: {
-    title: "Cognitive Dialectic",
-    metric1: "Kinesthetic Drive",
-    val1: 20,
-    metric2: "Cognitive Load",
-    val2: 90,
-    metric3: "Social Resonance",
-    val3: 95,
-    spark: "ZINC-600 // CRITICAL_HEURISTIC",
-    blueprint: "Establish randomized peer-debate dyads. Force thesis-antithesis synthesis in rapid 90 second intervals with muted transitions."
-  },
-  reticulation: {
-    title: "Logical Reticulation",
-    metric1: "Kinesthetic Drive",
-    val1: 15,
-    metric2: "Cognitive Load",
-    val2: 95,
-    metric3: "Social Resonance",
-    val3: 40,
-    spark: "ZINC-400 // RESOLVING_DEDUCTION",
-    blueprint: "Deploy silent puzzle sequences in increments of three. Gradual logic escalation builds dopamine cycles via pattern recognition."
-  }
-};
-
 const WarmupsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -453,10 +417,9 @@ const WarmupsPage = () => {
   const [selectedMaterials, setSelectedMaterials] = useState("All");
   const [viewMode, setViewMode] = useState("colorful"); // colorful grid, minimalist grid, compact list
   const [selectedWarmup, setSelectedWarmup] = useState(null);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeFormulaId, setActiveFormulaId] = useState("voltage");
 
   // Derive selectedType directly from the URL pathname to avoid state synchronization side-effects
   const selectedType = useMemo(() => {
@@ -1079,10 +1042,10 @@ const WarmupsPage = () => {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-h-[500px]">
+              <div className="flex flex-col gap-8 lg:gap-12 min-h-[500px]">
                 
-                {/* LEFT COLUMN (4/12 width): Title, objectives, custom sticky note tips */}
-                <div className="lg:col-span-4 flex flex-col justify-between space-y-8 lg:border-r lg:border-zinc-250/20 lg:dark:border-zinc-800/50 lg:pr-10">
+                {/* Meta details and Instructions */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                   
                   <div className="space-y-6">
                     {/* Category Label Tag */}
@@ -1123,20 +1086,35 @@ const WarmupsPage = () => {
                     </div>
                   </div>
 
-                  {/* Objective replacing sticky note */}
-                  {selectedWarmup.description && (
-                    <div className="bg-white/40 dark:bg-zinc-900/40 text-zinc-900 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-800/80 p-5 rounded-2xl relative shadow-sm text-xs leading-relaxed font-semibold">
-                      <div className="text-[9px] font-mono tracking-widest text-zinc-500 font-extrabold uppercase mb-2">Objectives</div>
-                      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed pr-2 font-mono text-[11px]">
-                        {selectedWarmup.description}
-                      </p>
-                    </div>
-                  )}
+                  {/* Objective and Pro Tips */}
+                  <div className="flex flex-col gap-6">
+                    {/* Objective */}
+                    {selectedWarmup.description && (
+                      <div className="bg-yellow-50/80 dark:bg-yellow-500/10 text-yellow-900 dark:text-yellow-100 border border-yellow-200/50 dark:border-yellow-500/30 p-6 sm:p-8 rounded-3xl relative shadow-sm text-xs leading-relaxed font-semibold flex flex-col justify-center">
+                        <div className="text-[9px] font-mono tracking-widest text-yellow-600 dark:text-yellow-500/80 font-extrabold uppercase mb-3">Objectives</div>
+                        <p className="text-yellow-950 dark:text-yellow-100 leading-relaxed pr-2 font-mono text-sm">
+                          {selectedWarmup.description}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Pro Tips */}
+                    {selectedWarmup.tips && (
+                      <div className="bg-white/40 dark:bg-zinc-900/40 border border-zinc-200/50 dark:border-zinc-800/80 p-6 sm:p-8 rounded-3xl relative shadow-sm text-xs leading-relaxed font-semibold flex flex-col justify-center flex-1">
+                        <div className="text-[9px] font-mono tracking-widest text-zinc-500 font-extrabold uppercase mb-3">Pro Tips</div>
+                        <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed pr-2 font-mono text-sm">
+                          {selectedWarmup.tips}
+                        </p>
+                      </div>
+                    )}
+                  </div>
 
                 </div>
 
-                {/* RIGHT COLUMN (8/12 width): Step cols side-by-side with dividers matching screenshot */}
-                <div className="lg:col-span-8 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-zinc-200/60 dark:divide-zinc-800/60 overflow-x-auto pb-4 -mx-2 md:mx-0">
+                {/* Steps Listed Top to Bottom */}
+                <div className="flex flex-col gap-4 w-full">
+                  <div className="text-[10px] font-mono font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase block mb-2 border-b border-zinc-200/40 dark:border-zinc-800/40 pb-2">Execution Steps</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {selectedWarmup.instructions.map((step, idx) => {
                     const stepNum = idx + 1;
                     const totalSteps = selectedWarmup.instructions.length;
@@ -1144,11 +1122,14 @@ const WarmupsPage = () => {
                     return (
                       <div 
                         key={idx} 
-                        className="flex-1 min-w-[220px] px-2 md:px-6 lg:px-8 py-6 md:py-0 first:pl-2 first:md:pl-0 last:pr-0 flex flex-col justify-between h-full group/step transition-all"
+                        className="flex flex-col justify-between h-full group/step transition-all bg-white/40 dark:bg-zinc-900/20 backdrop-blur-md rounded-2xl p-6 border border-zinc-200/50 dark:border-zinc-800/60 shadow-xs hover:border-zinc-350 dark:hover:border-zinc-700 hover:shadow-sm"
                       >
                         {/* Step title label */}
                         <div className="space-y-4">
-                          <h5 className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-zinc-450 dark:text-zinc-500">
+                          <h5 className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-zinc-450 dark:text-zinc-500 flex items-center gap-2">
+                            <span className={`w-5 h-5 rounded-md flex items-center justify-center bg-zinc-200/50 dark:bg-zinc-800/50 ${selectedWarmup.tagColor}`}>
+                               {stepNum}
+                            </span>
                             STEP {stepNum}
                           </h5>
                           
@@ -1158,7 +1139,7 @@ const WarmupsPage = () => {
                         </div>
 
                         {/* Beautiful minimalist hand-drawn diagram container sketch below */}
-                        <div className="mt-8 transition-transform duration-500 group-hover/step:scale-[1.02]">
+                        <div className="mt-8 transition-transform duration-500 group-hover/step:scale-[1.02] flex items-center justify-center">
                           <StepIllustration 
                             activityType={selectedWarmup.activityType} 
                             index={idx} 
@@ -1168,6 +1149,7 @@ const WarmupsPage = () => {
                       </div>
                     );
                   })}
+                  </div>
                 </div>
 
               </div>
@@ -1356,61 +1338,63 @@ const WarmupsPage = () => {
                               transition={{ duration: 0.28, ease: "easeInOut" }}
                               className="overflow-hidden"
                             >
-                              <div className="px-6 pb-6 pt-2 border-t border-zinc-200/50 dark:border-zinc-800/80 grid grid-cols-1 lg:grid-cols-12 gap-6 bg-zinc-50/10 dark:bg-zinc-950/25 backdrop-blur-md">
-                                <div className="lg:col-span-4 space-y-4">
-                                  <div>
+                              <div className="px-6 pb-6 pt-4 border-t border-zinc-200/50 dark:border-zinc-800/80 flex flex-col gap-6 bg-zinc-50/10 dark:bg-zinc-950/25 backdrop-blur-md">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                  <div className="flex flex-col gap-4">
+                                    <span className="text-[9px] font-mono font-black uppercase text-zinc-400 dark:text-zinc-500 tracking-wider">Details</span>
+                                    <div className="flex flex-col gap-4 text-[10px] text-zinc-400 dark:text-zinc-500 font-mono bg-zinc-150/10 dark:bg-zinc-950/30 p-4 rounded-xl border border-zinc-200/20 dark:border-zinc-950/20 h-full justify-center">
+                                      <div className="flex gap-2">
+                                        <span>EDUCATION LEVEL:</span>
+                                        <span className="font-bold text-zinc-700 dark:text-zinc-350">{warmup.engagementLevel || "High"}</span>
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <span>PREPARATION TYPE:</span>
+                                        <span className="font-bold text-zinc-700 dark:text-zinc-350">{warmup.preparation} Prep</span>
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <span>FACILITATOR AUTHOR:</span>
+                                        <span className="font-bold text-zinc-700 dark:text-zinc-350">{warmup.author}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col gap-4">
                                     <span className="text-[9px] font-mono font-black uppercase text-zinc-400 dark:text-zinc-500 tracking-wider">Objective</span>
-                                    <p className="text-xs text-zinc-650 dark:text-zinc-400 leading-relaxed font-semibold mt-1 bg-white/30 dark:bg-zinc-950/20 p-3.5 rounded-xl border border-zinc-200/30 dark:border-zinc-950/20 shadow-3xs">
+                                    <p className="flex-1 text-xs text-yellow-950 dark:text-yellow-100 leading-relaxed font-semibold bg-yellow-50/80 dark:bg-yellow-500/10 p-4 rounded-xl border border-yellow-200/50 dark:border-yellow-500/30 shadow-3xs">
                                       {warmup.description}
                                     </p>
                                   </div>
-                                  <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono space-y-1 bg-zinc-150/10 dark:bg-zinc-950/30 p-3.5 rounded-xl border border-zinc-200/20 dark:border-zinc-950/20">
-                                    <div className="flex justify-between">
-                                      <span>EDUCATION LEVEL:</span>
-                                      <span className="font-bold text-zinc-700 dark:text-zinc-350">{warmup.engagementLevel || "High"}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span>PREPARATION TYPE:</span>
-                                      <span className="font-bold text-zinc-700 dark:text-zinc-350">{warmup.preparation} Prep</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span>FACILITATOR AUTHOR:</span>
-                                      <span className="font-bold text-zinc-700 dark:text-zinc-350">{warmup.author}</span>
-                                    </div>
-                                  </div>
                                 </div>
 
-                                <div className="lg:col-span-8 flex flex-col justify-between">
+                                <div className="flex flex-col justify-between">
                                   <div className="space-y-3">
                                     <span className="text-[9px] font-mono font-black uppercase text-zinc-450 dark:text-zinc-550 tracking-wider">Tactical execution blueprint</span>
-                                    <div className="grid grid-cols-1 gap-3 mt-1">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-1">
                                       {warmup.instructions.map((step, idx) => (
                                         <div 
                                           key={idx} 
-                                          className="bg-white/45 dark:bg-zinc-900/15 backdrop-blur-md rounded-xl border border-zinc-200/50 dark:border-zinc-800/80 p-3.5 shadow-3xs flex gap-3.5 items-start hover:border-zinc-350 dark:hover:border-zinc-800 transition-all duration-300"
+                                          className="bg-white/45 dark:bg-zinc-900/15 backdrop-blur-md rounded-xl border border-zinc-200/50 dark:border-zinc-800/80 p-4 shadow-3xs flex flex-col gap-3.5 items-start hover:border-zinc-350 dark:hover:border-zinc-800 transition-all duration-300 group/step"
                                         >
-                                          <span className={`w-5.5 h-5.5 rounded-lg shrink-0 flex items-center justify-center text-[9px] font-mono font-black ${activeTheme.primaryBg}`}>
-                                            {idx + 1}
-                                          </span>
-                                          <div className="flex-1">
-                                            <span className="text-[8px] font-mono font-bold text-zinc-400 dark:text-zinc-500 block mb-0.5">STEP {idx + 1}</span>
+                                          <div className="flex items-center gap-2">
+                                            <span className={`w-5.5 h-5.5 rounded-lg shrink-0 flex items-center justify-center text-[9px] font-mono font-black ${activeTheme.primaryBg}`}>
+                                              {idx + 1}
+                                            </span>
+                                            <span className="text-[10px] font-mono font-bold text-zinc-400 dark:text-zinc-500 uppercase">STEP {idx + 1}</span>
+                                          </div>
+                                          <div className="flex-1 w-full flex flex-col justify-between h-full">
                                             <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-xs font-semibold">
                                               {step}
                                             </p>
+                                            <div className="mt-6 transition-transform duration-500 group-hover/step:scale-[1.02] flex items-center justify-center">
+                                              <StepIllustration 
+                                                activityType={warmup.activityType} 
+                                                index={idx} 
+                                                className="w-full" 
+                                              />
+                                            </div>
                                           </div>
                                         </div>
                                       ))}
                                     </div>
-                                  </div>
-
-                                  <div className="flex justify-end mt-4 gap-2 pt-4 border-t border-zinc-200/10 dark:border-zinc-900/40">
-                                    <button
-                                      onClick={() => setSelectedWarmup(warmup)}
-                                      className={`flex items-center gap-1.5 px-4 py-1.5 ${activeTheme.primaryBg} text-[10px] font-black uppercase tracking-widest rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-xs`}
-                                    >
-                                      <span>Open immersive view</span>
-                                      <PlayCircle size={12} className="stroke-[2.2]" />
-                                    </button>
                                   </div>
                                 </div>
                               </div>
@@ -1528,165 +1512,6 @@ const WarmupsPage = () => {
         </AnimatePresence>
 
         </div>
-
-        {/* Minimalist divider line with technical accent label */}
-        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-zinc-250 dark:via-zinc-800 to-transparent my-24 relative" id="laboratory-divider">
-          <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-50 dark:bg-zinc-950 px-6 py-1 text-[9px] font-mono tracking-widest text-zinc-400 dark:text-zinc-500 uppercase font-bold transition-colors duration-1000">
-            Atmosphere Laboratory
-          </div>
-        </div>
-
-        {/* Elegant Laboratory Interactive Core Section */}
-        <div className="w-full flex flex-col lg:flex-row gap-12 items-stretch justify-between mb-8" id="laboratory-section">
-          {/* Left: Section Header with bold, clean typography and minimal info-graphic */}
-          <div className="w-full lg:w-1/3 flex flex-col justify-between gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Cpu className="text-zinc-650 dark:text-zinc-400 animate-pulse" size={15} />
-                <span className="text-[10px] font-mono font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-                  SYSTEMIC SYNERGY
-                </span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-white uppercase leading-none font-sans">
-                ENGAGEMENT <br />FORMULAS
-              </h2>
-              <p className="text-zinc-500 dark:text-zinc-455 text-xs leading-relaxed font-semibold font-sans">
-                Interactive blueprint matrices for tuning classroom focus. Choose a catalyst mode below to calibrate tactile and cognitive activity.
-              </p>
-            </div>
-
-            {/* Elegant selection buttons in shades of Zinc with backdrop filters */}
-            <div className="flex flex-col gap-2.5 w-full font-mono">
-              {Object.entries(formulaData).map(([key, item]) => {
-                const isActive = activeFormulaId === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setActiveFormulaId(key)}
-                    className={`w-full text-left p-4 rounded-2xl border backdrop-blur-xl transition-all duration-350 cursor-pointer text-xs flex items-center justify-between ${
-                      isActive
-                        ? "bg-zinc-950 dark:bg-zinc-100 border-transparent text-white dark:text-zinc-955 shadow-md font-bold scale-[1.015]"
-                        : "bg-white/40 dark:bg-zinc-900/10 border-zinc-200/50 dark:border-zinc-800/40 text-zinc-505 dark:text-zinc-400 hover:bg-zinc-200/60 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-white"
-                    }`}
-                    id={`catalyst-btn-${key}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? "bg-white dark:bg-zinc-950 scale-125" : "bg-zinc-450 dark:bg-zinc-600"}`} />
-                      <span className="uppercase tracking-widest text-[9px] font-black">{item.title}</span>
-                    </div>
-                    <ArrowRight size={13} className={`transition-transform duration-300 ${isActive ? "translate-x-1" : ""}`} />
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right: Interactive Formula Engine with backdrop filters + status cards */}
-          <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            
-            {/* Card 1: Synergy Metric Bars with elegant backdrop blur */}
-            <div className="p-8 rounded-[2rem] border border-zinc-200/50 dark:border-zinc-805/40 bg-white/40 dark:bg-zinc-900/10 backdrop-blur-xl hover:shadow-2xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-all duration-500 flex flex-col justify-between min-h-[290px]" id="metric-bars-panel">
-              <div className="space-y-5 w-full">
-                <div className="flex justify-between items-center border-b border-zinc-200/40 dark:border-zinc-800/60 pb-3">
-                  <span className="text-[9px] font-mono tracking-widest font-black uppercase text-zinc-400 dark:text-zinc-500">
-                    ATMOSPHERE INDEX
-                  </span>
-                  <span className="text-[9px] font-mono font-bold text-zinc-400 dark:text-zinc-550">
-                    {formulaData[activeFormulaId].spark}
-                  </span>
-                </div>
-
-                <div className="space-y-4 pt-2">
-                  {/* Metric 1 */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-400 uppercase">
-                      <span>{formulaData[activeFormulaId].metric1}</span>
-                      <span className="text-zinc-900 dark:text-white font-black">{formulaData[activeFormulaId].val1}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-zinc-200/40 dark:bg-zinc-900/60 rounded-full overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${formulaData[activeFormulaId].val1}%` }}
-                        transition={{ duration: 0.45, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Metric 2 */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-400 uppercase">
-                      <span>{formulaData[activeFormulaId].metric2}</span>
-                      <span className="text-zinc-900 dark:text-white font-black">{formulaData[activeFormulaId].val2}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-zinc-200/40 dark:bg-zinc-900/60 rounded-full overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${formulaData[activeFormulaId].val2}%` }}
-                        transition={{ duration: 0.45, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Metric 3 */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-400 uppercase">
-                      <span>{formulaData[activeFormulaId].metric3}</span>
-                      <span className="text-zinc-900 dark:text-white font-black">{formulaData[activeFormulaId].val3}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-zinc-200/40 dark:bg-zinc-900/60 rounded-full overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${formulaData[activeFormulaId].val3}%` }}
-                        transition={{ duration: 0.45, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-[8px] font-mono tracking-wider text-zinc-400 dark:text-zinc-500 uppercase font-black pt-4 border-t border-zinc-200/20 dark:border-zinc-800/40 mt-6">
-                Active Synthesis Metrics
-              </div>
-            </div>
-
-            {/* Card 2: Blueprint Details with elegant backdrop blur */}
-            <div className="p-8 rounded-[2rem] border border-zinc-200/50 dark:border-zinc-805/40 bg-zinc-100/10 dark:bg-zinc-905/10 backdrop-blur-xl hover:shadow-2xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/20 dark:hover:bg-zinc-900/15 transition-all duration-500 flex flex-col justify-between min-h-[290px]" id="blueprint-details-panel">
-              <div className="space-y-5">
-                <div className="flex justify-between items-center border-b border-zinc-200/40 dark:border-zinc-800/60 pb-3">
-                  <span className="text-[9px] font-mono tracking-widest font-black uppercase text-zinc-400 dark:text-zinc-500">
-                    TACTICAL BLUEPRINT
-                  </span>
-                  <div className="p-2 rounded-2xl bg-zinc-200/40 dark:bg-zinc-800/40 text-zinc-650 dark:text-zinc-350 shadow-sm">
-                    <Wrench size={14} className="stroke-[2]" />
-                  </div>
-                </div>
-
-                <div className="space-y-3 pt-1">
-                  <h4 className="text-[10px] font-mono uppercase text-zinc-400 dark:text-zinc-500 font-black tracking-widest">
-                    OPERATIONAL PROTOCOL
-                  </h4>
-                  <p className="text-zinc-600 dark:text-zinc-300 text-xs sm:text-[13px] leading-relaxed font-semibold font-sans">
-                    {formulaData[activeFormulaId].blueprint}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 pt-4 border-t border-zinc-205/15 dark:border-zinc-800/40 mt-6">
-                <div className="w-5.5 h-5.5 rounded-full bg-zinc-950/10 dark:bg-white/10 flex items-center justify-center border border-zinc-250/20 dark:border-zinc-750/35">
-                  <Flame size={11} className="text-zinc-600 dark:text-zinc-300" />
-                </div>
-                <span className="text-[8px] font-mono tracking-widest text-zinc-400 dark:text-zinc-500 uppercase font-black">
-                  Warmedia Pedagogical Engine
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
       </div>
 
     </div>

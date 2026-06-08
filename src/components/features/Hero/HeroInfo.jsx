@@ -1,9 +1,17 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Clock, Calendar } from "lucide-react";
 import { useSettings } from "../../../context/SettingsContext";
 import CalendarWidget from "./CalendarWidget";
 
-const HeroInfo = ({ dateTime }) => {
+const HeroInfo = ({ className = "" }) => {
+  const [dateTime, setDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setDateTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const { 
     showTime, 
     showDate, 
@@ -40,7 +48,7 @@ const HeroInfo = ({ dateTime }) => {
   if (!dateVisible && !timeVisible && !calendarVisible) return null;
 
   return (
-    <div className="lg:col-span-3 flex flex-col justify-center lg:justify-end h-full py-6 lg:py-10 order-2 lg:order-3 px-4 md:px-8 lg:pr-8 relative z-50 items-center lg:items-end mt-12 lg:mt-0">
+    <div className={`${className} flex flex-col justify-center lg:justify-end h-full py-6 lg:py-10 relative z-50 items-center lg:items-end`}>
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}

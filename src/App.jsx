@@ -1,16 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from "next-themes";
 
 import MainLayout from './components/layout/MainLayout';
-import Home from './pages/Home';
-import ResourcePage from './pages/ResourcePage';
-import WarmupsPage from './pages/WarmupsPage';
-import ContactPage from './pages/ContactPage';
-import ExercisesPage from './pages/ExercisesPage';
-import AssessmentsPage from './pages/AssessmentsPage';
-import SearchPage from './pages/SearchPage';
-import NotFoundPage from './pages/NotFoundPage';
+const Home = lazy(() => import('./pages/Home'));
+const ResourcePage = lazy(() => import('./pages/ResourcePage'));
+const WarmupsPage = lazy(() => import('./pages/WarmupsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const ExercisesPage = lazy(() => import('./pages/ExercisesPage'));
+const AssessmentsPage = lazy(() => import('./pages/AssessmentsPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 import { textbookFilters, mockResources } from './data/mockData';
 
 import ClickSpark from "./components/ui/ClickSpark";
@@ -99,18 +99,20 @@ const AppContent = () => {
       <ContextMenu />
       
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
-            <Route path="warm-ups/*" element={<WarmupsPage />} />
-            <Route path="materials/*" element={<ResourcePage title="Teaching Materials" description="Access premium lesson plans, textbook companions, and printable worksheets compiled to save your prep time." filterConfig={textbookFilters} resources={mockResources.filter(r => r.type === 'lesson-plan' || r.type === 'textbook')} />} />
-            <Route path="exercises/*" element={<ExercisesPage />} />
-            <Route path="assessments/*" element={<AssessmentsPage />} />
-            <Route path="search" element={<SearchPage />} />
-            <Route path="contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-zinc-500">Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Home />} />
+              <Route path="warm-ups/*" element={<WarmupsPage />} />
+              <Route path="materials/*" element={<ResourcePage title="Teaching Materials" description="Access premium lesson plans, textbook companions, and printable worksheets compiled to save your prep time." filterConfig={textbookFilters} resources={mockResources.filter(r => r.type === 'lesson-plan' || r.type === 'textbook')} />} />
+              <Route path="exercises/*" element={<ExercisesPage />} />
+              <Route path="assessments/*" element={<AssessmentsPage />} />
+              <Route path="search" element={<SearchPage />} />
+              <Route path="contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
       
       {sparksEnabled && (

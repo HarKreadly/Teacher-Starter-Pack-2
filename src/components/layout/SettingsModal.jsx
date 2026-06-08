@@ -25,10 +25,13 @@ const ToggleRow = ({ icon: Icon, title, desc, value, onChange }) => {
         <p className="text-xs font-bold uppercase tracking-tight text-zinc-950 dark:text-zinc-100 truncate">{title}</p>
         <p className="text-[10px] text-zinc-450 dark:text-zinc-500 mt-0.5 leading-relaxed font-semibold">{desc}</p>
       </div>
-      <div 
-        className={`w-9 h-5 rounded-full transition-all duration-300 relative outline-hidden shrink-0 ${value ? `${activeTheme.primaryBg} border ${activeTheme.border}` : 'bg-zinc-200 dark:bg-zinc-850 border border-transparent'}`}
-      >
-        <div className={`absolute top-0.5 w-4 h-4 rounded-full transition-all duration-300 shadow-sm ${value ? 'left-4.5 bg-white dark:bg-zinc-300' : 'left-0.5 bg-white dark:bg-zinc-500'}`} />
+      <div className="flex items-center rounded-xl p-1 bg-zinc-200/50 dark:bg-zinc-900 border border-zinc-200/40 dark:border-zinc-800 shrink-0 select-none">
+        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${value ? `${activeTheme.primaryBg} shadow-xs text-zinc-900 dark:text-white` : 'text-zinc-400 dark:text-zinc-500'}`}>
+          On
+        </div>
+        <div className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${!value ? 'bg-white dark:bg-zinc-800 shadow-xs text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-500'}`}>
+          Off
+        </div>
       </div>
     </div>
   );
@@ -117,6 +120,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     sparksEnabled, setSparksEnabled,
     floatingParticles, setFloatingParticles,
     scanlines, setScanlines,
+    acrylicEnabled, setAcrylicEnabled,
     performanceMode, setPerformanceMode,
     smoothScroll, setSmoothScroll,
     autoPlaySpeed, setAutoPlaySpeed,
@@ -288,6 +292,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             <div>
               <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-500 mb-3.5">Environment aesthetics</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <ToggleRow icon={Layers} title="Acrylic Backdrop" desc="Glassmorphism blur for better visuals" value={acrylicEnabled} onChange={() => setAcrylicEnabled(!acrylicEnabled)} />
                 <ToggleRow icon={Film} title="Film Grain" desc="Cinematic visual texture overlay" value={scanlines} onChange={() => setScanlines(!scanlines)} />
                 <ToggleRow icon={Waves} title="Dispersion ripples" desc="Concentric canvas ripples on movement" value={dispersionCursorEnabled} onChange={() => setDispersionCursorEnabled(!dispersionCursorEnabled)} />
                 <ToggleRow icon={Sparkles} title="Click Sparks" desc="Refined particle fireworks at point of click" value={sparksEnabled} onChange={() => setSparksEnabled(!sparksEnabled)} />
@@ -343,7 +348,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         return (
           <div>
             <p className="text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-550 mb-3.5">Release Chronicles</p>
-            <div className="flex flex-col gap-4 pr-1.5 scrollbar-none">
+            <div className="flex flex-col gap-4 pr-1.5 overflow-y-auto">
               {versions.map((v) => (
                 <div 
                   key={v.id} 
@@ -422,7 +427,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             {/* Sidebar + Content */}
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden h-full">
               {/* Sidebar Navigation */}
-              <nav className="w-full md:w-52 shrink-0 p-4 md:p-6 border-b md:border-b-0 md:border-r border-zinc-200/20 dark:border-zinc-900/40 flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-y-auto scrollbar-none [overscroll-behavior:contain]">
+              <nav className="w-full md:w-52 shrink-0 p-4 md:p-6 border-b md:border-b-0 md:border-r border-zinc-200/20 dark:border-zinc-900/40 flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-y-auto [overscroll-behavior:contain]">
                 {sections.map(section => {
                   const isActive = activeSection === section.id;
                   return (
@@ -449,7 +454,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </nav>
 
               {/* Scrolling Settings Panel */}
-              <div className="flex-1 p-6 md:p-8 overflow-y-auto scrollbar-none [overscroll-behavior-y:contain] h-full">
+              <div className="flex-1 p-6 md:p-8 overflow-y-auto [overscroll-behavior-y:contain] h-full">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeSection}
